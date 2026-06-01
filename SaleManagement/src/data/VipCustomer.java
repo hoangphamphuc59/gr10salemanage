@@ -6,9 +6,9 @@ public class VipCustomer extends Customer {
         super();
     }
 
-    public VipCustomer(String id, String name, String phone, 
-            String email, String address) {
-        super(id, name, email, phone, address);
+    public VipCustomer(String id, String name, String email, 
+               String phone, String address, int age, String gender) {
+        super(id, name, email, phone, address, age, gender);
     }
 
     @Override
