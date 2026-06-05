@@ -1,4 +1,4 @@
-package data;
+package models;
 
 public class VipCustomer extends Customer {
 
@@ -6,7 +6,7 @@ public class VipCustomer extends Customer {
         super();
     }
 
-    public VipCustomer(String id, String name, String email, 
+    public VipCustomer(String id, String name, String email,
                String phone, String address, int age, String gender) {
         super(id, name, email, phone, address, age, gender);
     }

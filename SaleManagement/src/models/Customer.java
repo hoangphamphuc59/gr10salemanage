@@ -1,4 +1,4 @@
-package data;
+package models;
 
 public class Customer {
 
@@ -12,7 +12,6 @@ public class Customer {
     protected double discount = 0.00;
 
     public Customer() {
-
     }
 
     public Customer(String id, String name, String email,

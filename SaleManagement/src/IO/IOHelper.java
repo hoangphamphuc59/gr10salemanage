@@ -1,5 +1,10 @@
-package data;
+package IO;
 
+import models.Customer;
+import models.Product;
+import models.RegularCustomer;
+import models.Transaction;
+import models.VipCustomer;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,46 +13,26 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.time.LocalDate;
 import java.util.Map;
 
-public class Management {
+public class IOHelper {
 
-    private ArrayList<Customer> cusList;
-    private ArrayList<Product> proList;
-    private ArrayList<Transaction> traList;
+    private static final String DATA_DIR = "data" + File.separator;
+    private static final String fCus = DATA_DIR + "customer.txt";
+    private static final String fPro = DATA_DIR + "product.txt";
+    private static final String fTra = DATA_DIR + "transaction.txt";
 
-    private static final String fCus = "customer.txt";
-    private static final String fPro = "product.txt";
-    private static final String fTra = "transaction.txt";
-
-    public Management() {
+    public IOHelper() {
+        // Ensure data directory exists
+        File dir = new File("data");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
     }
 
-    public ArrayList<Customer> getCustomerList() {
-        return cusList;
-    }
-
-    public void setCustomerList(ArrayList<Customer> cusList) {
-        this.cusList = cusList;
-    }
-
-    public ArrayList<Product> getProductList() {
-        return proList;
-    }
-
-    public void setProductList(ArrayList<Product> proList) {
-        this.proList = proList;
-    }
-
-    public ArrayList<Transaction> getTransactionList() {
-        return traList;
-    }
-
-    public void setTransactionList(ArrayList<Transaction> traList) {
-        this.traList = traList;
-    }
-
+    // ==========================================
+    // FORMAT HELPERS
+    // ==========================================
     private String formatCustomer(Customer customer) {
         return String.format("|%s|%s|%s|%s|%s|%d|%s|%.2f|", customer.getId(), customer.getName(), customer.getPhone(), customer.getEmail(), customer.getAddress(), customer.getAge(), customer.getGender(), customer.getDiscount());
     }
@@ -66,7 +51,6 @@ public class Management {
         for (Map.Entry<Product, Integer> entry : items.entrySet()) {
             Product key = entry.getKey();
             Integer value = entry.getValue();
-
             result = result + String.format("%d", value) + formatProduct(key);
         }
 
@@ -74,82 +58,70 @@ public class Management {
         return result;
     }
 
-    public int saveCustomer() {
-        File fileName = new File(this.fCus);
-        String newLine;
-
-        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
-            for (Customer customer : this.cusList) {
-                newLine = formatCustomer(customer);
-                writer.write(newLine);
+    // ==========================================
+    // SAVE METHODS
+    // ==========================================
+    public int saveCustomer(ArrayList<Customer> cusList) {
+        File fileName = new File(fCus);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+            for (Customer customer : cusList) {
+                writer.write(formatCustomer(customer));
                 writer.newLine();
                 writer.flush();
             }
-
-            writer.close();
         } catch (IOException e) {
             return -1;
         }
         return 1;
     }
 
-    public int saveProduct() {
-        File fileName = new File(this.fPro);
-        String newLine;
-
-        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
-            for (Product product : this.proList) {
-                newLine = formatProduct(product);
-                writer.write(newLine);
+    public int saveProduct(ArrayList<Product> proList) {
+        File fileName = new File(fPro);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+            for (Product product : proList) {
+                writer.write(formatProduct(product));
                 writer.newLine();
                 writer.flush();
             }
-
-            writer.close();
         } catch (IOException e) {
             return -1;
         }
         return 1;
     }
 
-    public int saveTransaction() {
-        File fileName = new File(this.fTra);
-        String newLine;
-
-        try ( BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
-            for (Transaction transaction : this.traList) {
-                newLine = formatTransaction(transaction);
-                writer.write(newLine);
+    public int saveTransaction(ArrayList<Transaction> traList) {
+        File fileName = new File(fTra);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+            for (Transaction transaction : traList) {
+                writer.write(formatTransaction(transaction));
                 writer.newLine();
                 writer.flush();
             }
-
-            writer.close();
         } catch (IOException e) {
             return -1;
         }
         return 1;
     }
 
-    public int loadCustomer() {
-        File fileName = new File(this.fCus);
+    // ==========================================
+    // LOAD METHODS
+    // ==========================================
+    public ArrayList<Customer> loadCustomer() {
+        ArrayList<Customer> cusList = new ArrayList<>();
+        File fileName = new File(fCus);
         if (!fileName.exists()) {
             try {
                 fileName.createNewFile();
             } catch (IOException e) {
-                System.out.println("Could not create file: " + this.fCus);
+                System.out.println("Could not create file: " + fCus);
             }
-            return 0;
+            return cusList;
         }
 
-        cusList.clear();
-
-        try ( BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
+                if (line.trim().isEmpty()) continue;
 
                 String[] tokens = line.split("\\|");
                 if (tokens.length >= 9) {
@@ -163,40 +135,34 @@ public class Management {
                     double discount = Double.parseDouble(tokens[8].trim());
 
                     if (discount > 0.0) {
-                        VipCustomer customer = new VipCustomer(id, name, email, phone, address, age, gender);
-                        this.cusList.add(customer);
+                        cusList.add(new VipCustomer(id, name, email, phone, address, age, gender));
                     } else {
-                        RegularCustomer customer = new RegularCustomer(id, name, email, phone, address, age, gender);
-                        this.cusList.add(customer);
+                        cusList.add(new RegularCustomer(id, name, email, phone, address, age, gender));
                     }
-
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            return -1; // Lỗi đọc file hoặc lỗi ép kiểu dữ liệu
+            System.out.println("Error loading customers.");
         }
-        return 1; // Thành công
+        return cusList;
     }
 
-    public int loadProduct() {
-        File fileName = new File(this.fPro);
+    public ArrayList<Product> loadProduct() {
+        ArrayList<Product> proList = new ArrayList<>();
+        File fileName = new File(fPro);
         if (!fileName.exists()) {
             try {
                 fileName.createNewFile();
             } catch (IOException e) {
-                System.out.println("Could not create file: " + this.fPro);
+                System.out.println("Could not create file: " + fPro);
             }
-            return 0;
+            return proList;
         }
 
-        this.proList.clear();
-
-        try ( BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
+                if (line.trim().isEmpty()) continue;
 
                 String[] tokens = line.split("\\|");
                 if (tokens.length >= 6) {
@@ -206,45 +172,37 @@ public class Management {
                     double price = Double.parseDouble(tokens[4].trim());
                     int stock = Integer.parseInt(tokens[5].trim());
 
-                    Product product = new Product(productId, productName, category, price, stock);
-                    this.proList.add(product);
+                    proList.add(new Product(productId, productName, category, price, stock));
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            return -1;
+            System.out.println("Error loading products.");
         }
-        return 1;
+        return proList;
     }
 
-    public int loadTransaction() {
-        File fileName = new File(this.fTra);
+    public ArrayList<Transaction> loadTransaction() {
+        ArrayList<Transaction> traList = new ArrayList<>();
+        File fileName = new File(fTra);
         if (!fileName.exists()) {
             try {
                 fileName.createNewFile();
             } catch (IOException e) {
-                System.out.println("Could not create file: " + this.fTra);
+                System.out.println("Could not create file: " + fTra);
             }
-            return 0;
+            return traList;
         }
 
-        this.traList.clear();
-
-        try ( BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
+                if (line.trim().isEmpty()) continue;
 
                 String[] tokens = line.split("\\|");
 
-                // Tối thiểu phải có 11 phần tử (từ index 0 đến 10) thì mới đủ thông tin nền tảng
                 if (tokens.length >= 13) {
                     try {
-                        // a. Đọc thông tin Transaction ID ở đầu dòng
                         String transId = tokens[1].trim();
-
-                        // b. Đọc thông tin Customer (từ index 2 đến 7)
                         String cusId = tokens[2].trim();
                         String cusName = tokens[3].trim();
                         String cusPhone = tokens[4].trim();
@@ -254,29 +212,22 @@ public class Management {
                         String cusGender = tokens[8].trim();
                         double discount = Double.parseDouble(tokens[9].trim());
 
-                        // c. Đọc thông tin Transaction dạng chuỗi (từ index 8 đến 10)
                         String dateStr = tokens[10].trim();
                         double totalAmount = Double.parseDouble(tokens[11].trim());
                         String status = tokens[12].trim();
 
-                        // 1. Phân loại và gom thông tin Customer trước
-                        Customer customer = null;
+                        Customer customer;
                         if (discount > 0.0) {
                             customer = new VipCustomer(cusId, cusName, cusPhone, cusEmail, cusAddress, cusAge, cusGender);
                         } else {
                             customer = new RegularCustomer(cusId, cusName, cusPhone, cusEmail, cusAddress, cusAge, cusGender);
                         }
 
-                        // 2. HOÀN THIỆN DANH SÁCH ITEMS TRƯỚC (Khởi tạo một HashMap rỗng để nạp sản phẩm)
                         HashMap<Product, Integer> items = new HashMap<>();
-
-                        // Vòng lặp bóc tách và nạp sản phẩm vào HashMap 'items' vừa tạo
                         int i = 13;
                         while (i < tokens.length) {
                             String currentToken = tokens[i].trim();
-                            if (currentToken.equals("#") || currentToken.isEmpty()) {
-                                break;
-                            }
+                            if (currentToken.equals("#") || currentToken.isEmpty()) break;
 
                             int quantity = Integer.parseInt(currentToken);
                             String prodId = tokens[i + 1].trim();
@@ -286,30 +237,22 @@ public class Management {
                             int prodStock = Integer.parseInt(tokens[i + 5].trim());
 
                             Product product = new Product(prodId, prodName, prodCat, prodPrice, prodStock);
-
-                            // Thêm trực tiếp vào bảng danh sách items cục bộ
                             items.put(product, quantity);
-
                             i += 6;
                         }
 
-                        // 3. KHỞI TẠO TRANSACTON: Lúc này tất cả nguyên liệu bao gồm 'items' đã đầy đủ
-                        // Đồng thời ép chuỗi ngày 'dateStr' sang kiểu 'LocalDate' bằng hàm parse()
                         java.time.LocalDate localDate = java.time.LocalDate.parse(dateStr);
-
                         Transaction transaction = new Transaction(transId, customer, localDate, totalAmount, status, items);
-
-                        // 4. Lưu hóa đơn hoàn chỉnh vào danh sách hệ thống
-                        this.traList.add(transaction);
+                        traList.add(transaction);
 
                     } catch (Exception e) {
-                        System.out.println("Lỗi xử lý định dạng dòng hóa đơn, bỏ qua dòng này.");
+                        System.out.println("Error processing transaction line, skipping.");
                     }
                 }
             }
         } catch (IOException e) {
-            return -1;
+            System.out.println("Error loading transactions.");
         }
-        return 1;
+        return traList;
     }
 }

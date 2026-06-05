@@ -1,73 +1,59 @@
 package salemanagement;
 
-import data.Customer;
-import data.Inventory;
-import data.Management;
-import data.Product;
-import data.RegularCustomer;
-import data.Report;
-import data.Transaction;
-import data.VipCustomer;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import IO.IOHelper;
+import models.Customer;
+import models.Product;
+import models.Transaction;
+import services.CustomerManager;
+import services.ProductManager;
+import services.ReportManager;
+import services.TransactionManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class SaleManagement {
 
-    private static Management management;
+    private static IOHelper ioHelper;
+    private static ProductManager productManager;
+    private static CustomerManager customerManager;
+    private static TransactionManager transactionManager;
     private static Scanner sc = new Scanner(System.in);
-    
-    // Clone arraylists for future use
-    private static ArrayList<Customer> clonedCustomerList;
-    private static ArrayList<Product> clonedProductList;
-    private static ArrayList<Transaction> clonedTransactionList;
 
     public static void main(String[] args) {
         start();
         mainMenu();
     }
-    
+
     public static void start() {
-        management = new Management();
-        
-        management.setCustomerList(new ArrayList<>());
-        management.setProductList(new ArrayList<>());
-        management.setTransactionList(new ArrayList<>());
-        
-        management.loadCustomer();
-        management.loadProduct();
-        management.loadTransaction();
-        
-        clonedCustomerList = new ArrayList<>(management.getCustomerList());
-        clonedProductList = new ArrayList<>(management.getProductList());
-        clonedTransactionList = new ArrayList<>(management.getTransactionList());
-        
+        ioHelper = new IOHelper();
+        productManager = new ProductManager();
+        customerManager = new CustomerManager();
+        transactionManager = new TransactionManager();
+
+        // Load data from files into managers
+        productManager.setProductList(ioHelper.loadProduct());
+        customerManager.setCustomerList(ioHelper.loadCustomer());
+        transactionManager.setTransactionList(ioHelper.loadTransaction());
+
         System.out.println("System started and data loaded successfully.");
     }
-    
-    private static void saveData() {
-        management.setCustomerList(clonedCustomerList);
-        management.setProductList(clonedProductList);
-        management.setTransactionList(clonedTransactionList);
-        
-        management.saveCustomer();
-        management.saveProduct();
-        management.saveTransaction();
+
+    private static void saveAllData() {
+        ioHelper.saveProduct(productManager.getProductList());
+        ioHelper.saveCustomer(customerManager.getCustomerList());
+        ioHelper.saveTransaction(transactionManager.getTransactionList());
     }
 
     // ==========================================
-    // HELPER METHODS (Input Validation & Display)
+    // HELPER METHODS
     // ==========================================
-    
     private static void pause() {
         System.out.println("--------------------------------------");
         System.out.println("Press Enter to continue...");
         sc.nextLine();
     }
-    
+
     private static int readInt(String prompt, int min, int max) {
         int value;
         while (true) {
@@ -129,9 +115,9 @@ public class SaleManagement {
             System.out.println("3. Sales Management");
             System.out.println("4. Reporting");
             System.out.println("0. Exit");
-            
+
             int choice = readInt("Please enter your choice (0-4): ", 0, 4);
-            
+
             if (choice == 1) {
                 productMenu();
             } else if (choice == 2) {
@@ -142,7 +128,7 @@ public class SaleManagement {
                 reportMenu();
             } else if (choice == 0) {
                 System.out.println("Saving data and exiting...");
-                saveData();
+                saveAllData();
                 System.out.println("Goodbye!");
                 break;
             }
@@ -159,88 +145,85 @@ public class SaleManagement {
             System.out.println("4. View all products");
             System.out.println("5. Search products by name or category");
             System.out.println("0. Back to Main Menu");
-            
+
             int choice = readInt("Please enter your choice (0-5): ", 0, 5);
-            
-            if (choice == 1) { // Add product
+
+            if (choice == 1) {
                 String id = readString("Input product ID: ");
-                if (findProduct(id) != null) {
-                    System.out.println("Product ID already exists!");
-                    continue;
-                }
                 String name = readString("Input product name: ");
                 String cat = readString("Input product category: ");
                 double price = readDouble("Input product price: ", 0.01, Double.MAX_VALUE);
                 int stock = readInt("Input product stock quantity: ", 0, Integer.MAX_VALUE);
-                
-                clonedProductList.add(new Product(id, name, cat, price, stock));
-                saveData();
-                System.out.println("Product added successfully!");
+
+                boolean result = productManager.addProduct(id, name, cat, price, stock);
+                if (result) {
+                    saveAllData();
+                    System.out.println("Product added successfully!");
+                } else {
+                    System.out.println("Failed to add product! (ID may already exist or invalid input)");
+                }
                 pause();
 
-            } else if (choice == 2) { // Update product
+            } else if (choice == 2) {
                 String id = readString("Input ID of product to update: ");
-                Product p = findProduct(id);
-                if (p == null) {
+                if (productManager.findById(id) == null) {
                     System.out.println("Product not found!");
                 } else {
-                    p.setProductName(readString("Input new product name: "));
-                    p.setCategory(readString("Input new category: "));
-                    p.setPrice(readDouble("Input new price: ", 0.01, Double.MAX_VALUE));
-                    p.setStock(readInt("Input new stock quantity: ", 0, Integer.MAX_VALUE));
-                    saveData();
-                    System.out.println("Product updated successfully!");
+                    String name = readString("Input new product name: ");
+                    String cat = readString("Input new category: ");
+                    double price = readDouble("Input new price: ", 0.01, Double.MAX_VALUE);
+                    int stock = readInt("Input new stock quantity: ", 0, Integer.MAX_VALUE);
+
+                    boolean result = productManager.updateProduct(id, name, cat, price, stock);
+                    if (result) {
+                        saveAllData();
+                        System.out.println("Product updated successfully!");
+                    } else {
+                        System.out.println("Failed to update product!");
+                    }
                 }
                 pause();
 
-            } else if (choice == 3) { // Remove product
+            } else if (choice == 3) {
                 String id = readString("Input ID of product to remove: ");
-                Product p = findProduct(id);
-                if (p == null) {
-                    System.out.println("Product not found!");
-                } else {
-                    clonedProductList.remove(p);
-                    saveData();
+                boolean result = productManager.removeProduct(id);
+                if (result) {
+                    saveAllData();
                     System.out.println("Product removed successfully!");
+                } else {
+                    System.out.println("Product not found!");
                 }
                 pause();
 
-            } else if (choice == 4) { // View all
+            } else if (choice == 4) {
                 System.out.println("--------------------------------------");
-                if (clonedProductList.isEmpty()) {
+                ArrayList<Product> products = productManager.getProductList();
+                if (products.isEmpty()) {
                     System.out.println("No products available.");
                 } else {
-                    for (Product p : clonedProductList) {
+                    for (Product p : products) {
                         p.showProduct();
                     }
                 }
                 pause();
 
-            } else if (choice == 5) { // Search
-                String keyword = readString("Input name or category to search: ").toLowerCase();
+            } else if (choice == 5) {
+                String keyword = readString("Input name or category to search: ");
                 System.out.println("--------------------------------------");
-                boolean found = false;
-                for (Product p : clonedProductList) {
-                    if (p.getProductName().toLowerCase().contains(keyword) || 
-                        p.getCategory().toLowerCase().contains(keyword)) {
+                ArrayList<Product> results = productManager.searchByNameOrCategory(keyword);
+                if (results.isEmpty()) {
+                    System.out.println("No products found matching '" + keyword + "'.");
+                } else {
+                    for (Product p : results) {
                         p.showProduct();
-                        found = true;
                     }
                 }
-                if (!found) System.out.println("No products found matching '" + keyword + "'.");
                 pause();
 
             } else if (choice == 0) {
                 break;
             }
         }
-    }
-
-    private static Product findProduct(String id) {
-        for (Product p : clonedProductList) {
-            if (p.getProductId().equalsIgnoreCase(id)) return p;
-        }
-        return null;
     }
 
     // --- CUSTOMER MANAGEMENT ---
@@ -252,15 +235,11 @@ public class SaleManagement {
             System.out.println("3. Remove a customer");
             System.out.println("4. View all customers");
             System.out.println("0. Back to Main Menu");
-            
+
             int choice = readInt("Please enter your choice (0-4): ", 0, 4);
-            
+
             if (choice == 1) {
                 String id = readString("Input customer ID: ");
-                if (findCustomer(id) != null) {
-                    System.out.println("Customer ID already exists!");
-                    continue;
-                }
                 String name = readString("Input customer name: ");
                 String phone = readString("Input phone: ");
                 String email = readString("Input email: ");
@@ -269,51 +248,56 @@ public class SaleManagement {
                 String gender = readString("Input gender: ");
                 int isVip = readInt("Is VIP? (1 for YES, 0 for NO): ", 0, 1);
 
-                if (isVip == 1) {
-                    clonedCustomerList.add(new VipCustomer(id, name, phone, email, address, age, gender));
+                boolean result = customerManager.addCustomer(id, name, phone, email, address, age, gender, isVip == 1);
+                if (result) {
+                    saveAllData();
+                    System.out.println("Customer added successfully!");
                 } else {
-                    clonedCustomerList.add(new RegularCustomer(id, name, phone, email, address, age, gender));
+                    System.out.println("Failed to add customer! (ID may already exist or invalid input)");
                 }
-                saveData();
-                System.out.println("Customer added successfully!");
                 pause();
 
             } else if (choice == 2) {
                 String id = readString("Input ID of customer to update: ");
-                Customer c = findCustomer(id);
-                if (c == null) {
+                if (customerManager.findById(id) == null) {
                     System.out.println("Customer not found!");
                 } else {
-                    c.setName(readString("Input new name: "));
-                    c.setPhone(readString("Input new phone: "));
-                    c.setEmail(readString("Input new email: "));
-                    c.setAddress(readString("Input new address: "));
-                    c.setAge(readInt("Input new age: ", 1, 150));
-                    c.setGender(readString("Input new gender: "));
-                    saveData();
-                    System.out.println("Customer updated successfully!");
+                    String name = readString("Input new name: ");
+                    String phone = readString("Input new phone: ");
+                    String email = readString("Input new email: ");
+                    String address = readString("Input new address: ");
+                    int age = readInt("Input new age: ", 1, 150);
+                    String gender = readString("Input new gender: ");
+
+                    boolean result = customerManager.updateCustomer(id, name, phone, email, address, age, gender);
+                    if (result) {
+                        saveAllData();
+                        System.out.println("Customer updated successfully!");
+                    } else {
+                        System.out.println("Failed to update customer!");
+                    }
                 }
                 pause();
 
             } else if (choice == 3) {
                 String id = readString("Input ID of customer to remove: ");
-                Customer c = findCustomer(id);
-                if (c == null) {
-                    System.out.println("Customer not found!");
-                } else {
-                    clonedCustomerList.remove(c);
-                    saveData();
+                boolean result = customerManager.removeCustomer(id);
+                if (result) {
+                    saveAllData();
                     System.out.println("Customer removed successfully!");
+                } else {
+                    System.out.println("Customer not found!");
                 }
                 pause();
 
             } else if (choice == 4) {
                 System.out.println("--------------------------------------");
-                if (clonedCustomerList.isEmpty()) {
+                ArrayList<Customer> customers = customerManager.getCustomerList();
+                if (customers.isEmpty()) {
                     System.out.println("No customers available.");
                 } else {
-                    for (Customer c : clonedCustomerList) {
-                        System.out.printf("ID: %s | Name: %s | Phone: %s | VIP Discount: %.2f\n", 
+                    for (Customer c : customers) {
+                        System.out.printf("ID: %s | Name: %s | Phone: %s | VIP Discount: %.2f\n",
                             c.getId(), c.getName(), c.getPhone(), c.getDiscount());
                     }
                 }
@@ -325,13 +309,6 @@ public class SaleManagement {
         }
     }
 
-    private static Customer findCustomer(String id) {
-        for (Customer c : clonedCustomerList) {
-            if (c.getId().equalsIgnoreCase(id)) return c;
-        }
-        return null;
-    }
-
     // --- SALES MANAGEMENT ---
     private static void salesMenu() {
         while (true) {
@@ -340,119 +317,112 @@ public class SaleManagement {
             System.out.println("2. Update or cancel a transaction");
             System.out.println("3. View transaction history");
             System.out.println("0. Back to Main Menu");
-            
+
             int choice = readInt("Please enter your choice (0-3): ", 0, 3);
-            
-            if (choice == 1) { // Create Transaction
-                String transId = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-                
+
+            if (choice == 1) {
+                String transId = transactionManager.generateTransactionId();
+
                 String cusId = readString("Input Customer ID for this transaction: ");
-                Customer customer = findCustomer(cusId);
+                Customer customer = customerManager.findById(cusId);
                 if (customer == null) {
                     System.out.println("Customer not found. Transaction aborted.");
                     continue;
                 }
-                
+
                 HashMap<Product, Integer> cart = new HashMap<>();
-                
+
                 while (true) {
                     String pId = readString("Input Product ID to add (or type 'DONE' to finish): ");
                     if (pId.equalsIgnoreCase("DONE")) break;
-                    
-                    Product product = findProduct(pId);
+
+                    Product product = productManager.findById(pId);
                     if (product == null) {
                         System.out.println("Product not found!");
                         continue;
                     }
-                    
+
                     int qty = readInt("Input quantity to buy: ", 1, Integer.MAX_VALUE);
                     cart.put(product, cart.getOrDefault(product, 0) + qty);
                     System.out.println("Added " + qty + " of " + product.getProductName() + " to cart.");
                 }
-                
+
                 if (cart.isEmpty()) {
                     System.out.println("Transaction must have at least one product. Transaction aborted.");
                     continue;
                 }
-                
-                Transaction transaction = new Transaction(transId, customer, LocalDate.now(), 0.0, "PENDING", cart);
-                transaction.calculateTotal(); // Calculate total initially
-                
-                System.out.println("Initial Total Amount: $" + transaction.getTotalAmount());
+
+                Transaction transaction = transactionManager.createTransaction(transId, customer, cart);
+                if (transaction == null) {
+                    System.out.println("Failed to create transaction.");
+                    continue;
+                }
+
+                System.out.println("Total Amount: $" + transaction.getTotalAmount());
                 int confirm = readInt("Confirm this transaction? (1 for YES, 0 for NO): ", 0, 1);
-                
+
                 if (confirm == 1) {
-                    // We must save any pending data before checking inventory so Management matches Main
-                    saveData();
-                    
-                    Inventory inventory = new Inventory();
-                    transaction.confirmTransaction(inventory, management);
-                    
-                    if ("CONFIRMED".equalsIgnoreCase(transaction.getStatus())) {
-                        clonedTransactionList.add(transaction);
-                        // Reload products because inventory updated them on disk
-                        management.loadProduct(); 
-                        clonedProductList = new ArrayList<>(management.getProductList());
-                        saveData();
+                    // Confirm delegates to InventoryManager for stock check
+                    boolean confirmed = transactionManager.confirmTransaction(transaction, productManager.getProductList());
+                    if (confirmed) {
+                        saveAllData();
                         System.out.println("Transaction finalized and saved!");
                     } else {
                         System.out.println("Transaction failed (possibly out of stock).");
                     }
                 } else {
-                    transaction.cancelTransaction();
-                    clonedTransactionList.add(transaction);
-                    saveData();
+                    transactionManager.cancelTransaction(transaction);
+                    transactionManager.getTransactionList().add(transaction);
+                    saveAllData();
                     System.out.println("Transaction cancelled and saved to history.");
                 }
                 pause();
 
-            } else if (choice == 2) { // Update / Cancel
+            } else if (choice == 2) {
                 String tId = readString("Input Transaction ID to update/cancel: ");
-                Transaction t = null;
-                for (Transaction tr : clonedTransactionList) {
-                    if (tr.getTransactionId().equalsIgnoreCase(tId)) {
-                        t = tr;
-                        break;
-                    }
-                }
-                
+                Transaction t = transactionManager.findById(tId);
+
                 if (t == null) {
                     System.out.println("Transaction not found!");
                 } else if ("CONFIRMED".equalsIgnoreCase(t.getStatus())) {
-                    System.out.println("Cannot update a confirmed transaction (requires refund logic not implemented yet).");
+                    System.out.println("Cannot update a confirmed transaction.");
                 } else if ("CANCELLED".equalsIgnoreCase(t.getStatus())) {
                     System.out.println("Transaction is already cancelled.");
                 } else {
-                    // It's PENDING or FAILED
                     System.out.println("1. Update product quantity");
                     System.out.println("2. Cancel transaction");
                     int act = readInt("Choose action (1 or 2): ", 1, 2);
-                    
+
                     if (act == 1) {
                         String pId = readString("Input Product ID to update: ");
                         int newQty = readInt("Input new quantity (0 to remove): ", 0, Integer.MAX_VALUE);
-                        t.updateProductQuantity(pId, newQty);
-                        saveData();
-                        System.out.println("Transaction updated!");
+                        boolean updated = transactionManager.updateProductQuantity(t, pId, newQty);
+                        if (updated) {
+                            saveAllData();
+                            System.out.println("Transaction updated!");
+                        } else {
+                            System.out.println("Product not found in this transaction.");
+                        }
                     } else {
-                        t.cancelTransaction();
-                        saveData();
+                        transactionManager.cancelTransaction(t);
+                        saveAllData();
                         System.out.println("Transaction cancelled!");
                     }
                 }
                 pause();
-                
-            } else if (choice == 3) { // View History
+
+            } else if (choice == 3) {
                 System.out.println("--------------------------------------");
-                if (clonedTransactionList.isEmpty()) {
+                ArrayList<Transaction> transactions = transactionManager.getTransactionList();
+                if (transactions.isEmpty()) {
                     System.out.println("No transactions found.");
                 } else {
-                    for (Transaction t : clonedTransactionList) {
+                    for (Transaction t : transactions) {
                         t.displayTransaction();
                     }
                 }
                 pause();
-                
+
             } else if (choice == 0) {
                 break;
             }
@@ -461,8 +431,8 @@ public class SaleManagement {
 
     // --- REPORTING ---
     private static void reportMenu() {
-        Report report = new Report(clonedTransactionList);
-        
+        ReportManager report = new ReportManager(transactionManager.getTransactionList());
+
         while (true) {
             System.out.println("\n--- REPORTING ---");
             System.out.println("1. Generate Daily Sales Report");
@@ -470,9 +440,9 @@ public class SaleManagement {
             System.out.println("3. List Best-Selling Products");
             System.out.println("4. List Customers with Highest Purchase Value");
             System.out.println("0. Back to Main Menu");
-            
+
             int choice = readInt("Please enter your choice (0-4): ", 0, 4);
-            
+
             if (choice == 1) {
                 String date = readString("Input date (YYYY-MM-DD): ");
                 System.out.println("--------------------------------------");

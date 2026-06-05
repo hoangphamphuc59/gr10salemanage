@@ -1,22 +1,20 @@
-package data;
+package services;
 
+import models.Customer;
+import models.Product;
+import models.Transaction;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class Report {
+public class ReportManager {
 
     private ArrayList<Transaction> traList;
 
-    public Report(ArrayList<Transaction> traList) {
+    public ReportManager(ArrayList<Transaction> traList) {
         this.traList = traList;
     }
 
-    // =========================================================================
-    // HELPER METHOD: Filter CONFIRMED transactions by Date or Month
-    // =========================================================================
     private List<Transaction> filterTransactions(String dateInput, String type) {
         List<Transaction> validTransactions = new ArrayList<>();
 
@@ -43,9 +41,6 @@ public class Report {
         return validTransactions;
     }
 
-    // =========================================================================
-    // 1 & 2. GENERAL SALES REPORT (DAILY & MONTHLY)
-    // =========================================================================
     public void dailySaleReport(String dateStr) {
         System.out.println("\n=== DAILY SALES REPORT: " + dateStr + " ===");
         generateGeneralReport(filterTransactions(dateStr, "DAILY"));
@@ -76,9 +71,6 @@ public class Report {
         System.out.printf("- Total revenue: $%.2f\n", totalRevenue);
     }
 
-    // =========================================================================
-    // 3. TOP 3 HIGHEST SPENDING CUSTOMERS
-    // =========================================================================
     public void highestPurchaseCustomer(String dateInput, String type) {
         List<Transaction> filteredList = filterTransactions(dateInput, type);
         if (filteredList.isEmpty()) {
@@ -89,7 +81,6 @@ public class Report {
 
         Map<String, Double> customerSpending = new HashMap<>();
         for (Transaction t : filteredList) {
-            // Thay "Khách vãng lai" thành "Guest" hoặc "Walk-in Customer"
             String cusName = t.getCustomer() != null ? t.getCustomer().getName() : "Guest";
             customerSpending.put(cusName, customerSpending.getOrDefault(cusName, 0.0) + t.getTotalAmount());
         }
@@ -100,9 +91,6 @@ public class Report {
                 .forEach(e -> System.out.printf("  + %s: $%.2f\n", e.getKey(), e.getValue()));
     }
 
-    // =========================================================================
-    // 4. TOP 3 BEST-SELLING PRODUCTS (BY QUANTITY & REVENUE)
-    // =========================================================================
     public void bestSellingProducts(String dateInput, String type) {
         List<Transaction> filteredList = filterTransactions(dateInput, type);
         if (filteredList.isEmpty()) {
