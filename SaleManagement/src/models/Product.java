@@ -2,11 +2,11 @@ package models;
 
 public class Product {
 
-    protected String productId;
-    protected String productName;
-    protected String category;
-    protected double price;
-    protected int stock;
+    private String productId;
+    private String productName;
+    private String category;
+    private double price;
+    private int stock;
 
     public Product(String productId, String productName, String category, double price, int stock) {
         this.productId = productId;
