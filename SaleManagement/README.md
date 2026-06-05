@@ -1,4 +1,4 @@
-## 📁 Cấu trúc thư mục (Project Structure)
+## 📁 Project Structure
 ```text
 📁 SalesManagementSystem
 ├── 📁 src
