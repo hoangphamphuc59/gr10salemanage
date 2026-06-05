@@ -1,5 +1,3 @@
-package salemanagement;
-
 import IO.IOHelper;
 import models.Customer;
 import models.Product;
