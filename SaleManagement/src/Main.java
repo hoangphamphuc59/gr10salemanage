@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class SaleManagement {
+public class Main {
 
     private static IOHelper ioHelper;
     private static ProductManager productManager;
