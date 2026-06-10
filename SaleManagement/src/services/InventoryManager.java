@@ -11,7 +11,7 @@ public class InventoryManager {
     public InventoryManager() {
     }
 
-    /**
+       /**
      * Checks if all products in the transaction have sufficient stock.
      * Returns true if stock is sufficient for all items, false otherwise.
      * Does NOT modify stock - that is done separately after confirmation.

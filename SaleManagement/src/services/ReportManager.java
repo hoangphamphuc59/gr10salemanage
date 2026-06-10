@@ -1,6 +1,6 @@
 package services;
 
-import models.Customer;
+// import models.Customer;
 import models.Product;
 import models.Transaction;
 import java.time.LocalDate;
