@@ -218,9 +218,9 @@ public class IOHelper {
 
                         Customer customer;
                         if (discount > 0.0) {
-                            customer = new VipCustomer(cusId, cusName, cusPhone, cusEmail, cusAddress, cusAge, cusGender);
+                            customer = new VipCustomer(cusId, cusName, cusEmail, cusPhone, cusAddress, cusAge, cusGender);
                         } else {
-                            customer = new RegularCustomer(cusId, cusName, cusPhone, cusEmail, cusAddress, cusAge, cusGender);
+                            customer = new RegularCustomer(cusId, cusName, cusEmail, cusPhone, cusAddress, cusAge, cusGender);
                         }
 
                         HashMap<Product, Integer> items = new HashMap<>();

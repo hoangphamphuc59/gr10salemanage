@@ -247,11 +247,9 @@ public class ConsoleUi {
                 int isVip = readInt("Is VIP? (1 for YES, 0 for NO): ", 0, 1);
                 Customer cus;
                 if (isVip == 1) {
-                    cus = new VipCustomer(id, name, phone, email,
-                            address, age, gender);
+                    cus = new VipCustomer(id, name, email, phone, address, age, gender);
                 } else {
-                    cus = new RegularCustomer(id, name, phone, email,
-                            address, age, gender);
+                    cus = new RegularCustomer(id, name, email, phone, address, age, gender);
                 }
                 boolean result = customerManager.addCustomer(cus);
                 if (result) {

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class TransactionManager {
 
     private ArrayList<Transaction> transactionList;
-    private InventoryManager inventoryManager;
+    private final InventoryManager inventoryManager;
 
     public TransactionManager(InventoryManager inventoryManager) {
         this.transactionList = new ArrayList<>();
