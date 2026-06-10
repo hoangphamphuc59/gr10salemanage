@@ -1,8 +1,6 @@
 package services;
 
 import models.Customer;
-import models.VipCustomer;
-import models.RegularCustomer;
 import java.util.ArrayList;
 
 public class CustomerManager {
@@ -30,17 +28,14 @@ public class CustomerManager {
         return null;
     }
 
-    public boolean addCustomer(String id, String name, String phone, String email, String address, int age, String gender, boolean isVip) {
-        if (id == null || id.trim().isEmpty()) return false;
-        if (name == null || name.trim().isEmpty()) return false;
-        if (findById(id) != null) return false;
+    public boolean addCustomer(Customer customer) {
+        if (customer == null) return false;
+        if (customer.getId() == null || customer.getId().trim().isEmpty()) return false;
+        if (customer.getName() == null || customer.getName().trim().isEmpty()) return false;
+        
+        // Kiểm tra trùng ID
+        if (findById(customer.getId()) != null) return false;
 
-        Customer customer;
-        if (isVip) {
-            customer = new VipCustomer(id, name, phone, email, address, age, gender);
-        } else {
-            customer = new RegularCustomer(id, name, phone, email, address, age, gender);
-        }
         customerList.add(customer);
         return true;
     }

@@ -1,19 +1,33 @@
 package ui;
+
 import IO.IOHelper;
 import models.*;
 import services.*;
 import java.util.*;
+
 public class ConsoleUi {
-    private static IOHelper ioHelper;
-    private static ProductManager productManager;
-    private static CustomerManager customerManager;
-    private static TransactionManager transactionManager;
-    private static final Scanner sc = new Scanner(System.in);
-    public static void start() {
-        ioHelper = new IOHelper();
-        productManager = new ProductManager();
-        customerManager = new CustomerManager();
-        transactionManager = new TransactionManager();
+    private final IOHelper ioHelper;
+    private final ProductManager productManager;
+    private final CustomerManager customerManager;
+    private final TransactionManager transactionManager;
+    private final Scanner sc;
+
+    public ConsoleUi(IOHelper ioHelper,
+            ProductManager productManager,
+            CustomerManager customerManager,
+            TransactionManager transactionManager) {
+        this.ioHelper = ioHelper;
+        this.productManager = productManager;
+        this.customerManager = customerManager;
+        this.transactionManager = transactionManager;
+        this.sc = new Scanner(System.in);
+    }
+
+    public void start() {
+        // ioHelper = new IOHelper();
+        // productManager = new ProductManager();
+        // customerManager = new CustomerManager();
+        // transactionManager = new TransactionManager();
 
         // Load data from files into managers
         productManager.setProductList(ioHelper.loadProduct());
@@ -23,7 +37,7 @@ public class ConsoleUi {
         System.out.println("System started and data loaded successfully.");
     }
 
-    private static void saveAllData() {
+    private void saveAllData() {
         ioHelper.saveProduct(productManager.getProductList());
         ioHelper.saveCustomer(customerManager.getCustomerList());
         ioHelper.saveTransaction(transactionManager.getTransactionList());
@@ -32,13 +46,13 @@ public class ConsoleUi {
     // ==========================================
     // HELPER METHODS
     // ==========================================
-    private static void pause() {
+    private void pause() {
         System.out.println("--------------------------------------");
         System.out.println("Press Enter to continue...");
         sc.nextLine();
     }
 
-    private static int readInt(String prompt, int min, int max) {
+    private int readInt(String prompt, int min, int max) {
         int value;
         while (true) {
             try {
@@ -56,7 +70,7 @@ public class ConsoleUi {
         return value;
     }
 
-    private static double readDouble(String prompt, double min, double max) {
+    private double readDouble(String prompt, double min, double max) {
         double value;
         while (true) {
             try {
@@ -74,7 +88,7 @@ public class ConsoleUi {
         return value;
     }
 
-    private static String readString(String prompt) {
+    private String readString(String prompt) {
         String value;
         while (true) {
             System.out.print(prompt);
@@ -91,7 +105,7 @@ public class ConsoleUi {
     // ==========================================
     // MENUS
     // ==========================================
-    public static void mainMenu() {
+    public void mainMenu() {
         while (true) {
             System.out.println("\n========== SALE MANAGEMENT SYSTEM ==========");
             System.out.println("1. Product Management");
@@ -120,7 +134,7 @@ public class ConsoleUi {
     }
 
     // --- PRODUCT MANAGEMENT ---
-    private static void productMenu() {
+    private void productMenu() {
         while (true) {
             System.out.println("\n--- PRODUCT MANAGEMENT ---");
             System.out.println("1. Add new product");
@@ -211,7 +225,7 @@ public class ConsoleUi {
     }
 
     // --- CUSTOMER MANAGEMENT ---
-    private static void customerMenu() {
+    private void customerMenu() {
         while (true) {
             System.out.println("\n--- CUSTOMER MANAGEMENT ---");
             System.out.println("1. Add new customer");
@@ -231,8 +245,15 @@ public class ConsoleUi {
                 int age = readInt("Input age: ", 1, 150);
                 String gender = readString("Input gender: ");
                 int isVip = readInt("Is VIP? (1 for YES, 0 for NO): ", 0, 1);
-
-                boolean result = customerManager.addCustomer(id, name, phone, email, address, age, gender, isVip == 1);
+                Customer cus;
+                if (isVip == 1) {
+                    cus = new VipCustomer(id, name, phone, email,
+                            address, age, gender);
+                } else {
+                    cus = new RegularCustomer(id, name, phone, email,
+                            address, age, gender);
+                }
+                boolean result = customerManager.addCustomer(cus);
                 if (result) {
                     saveAllData();
                     System.out.println("Customer added successfully!");
@@ -282,7 +303,7 @@ public class ConsoleUi {
                 } else {
                     for (Customer c : customers) {
                         System.out.printf("ID: %s | Name: %s | Phone: %s | VIP Discount: %.2f\n",
-                            c.getId(), c.getName(), c.getPhone(), c.getDiscount());
+                                c.getId(), c.getName(), c.getPhone(), c.getDiscount());
                     }
                 }
                 pause();
@@ -294,7 +315,7 @@ public class ConsoleUi {
     }
 
     // --- SALES MANAGEMENT ---
-    private static void salesMenu() {
+    private void salesMenu() {
         while (true) {
             System.out.println("\n--- SALES MANAGEMENT ---");
             System.out.println("1. Create a new sales transaction");
@@ -318,7 +339,8 @@ public class ConsoleUi {
 
                 while (true) {
                     String pId = readString("Input Product ID to add (or type 'DONE' to finish): ");
-                    if (pId.equalsIgnoreCase("DONE")) break;
+                    if (pId.equalsIgnoreCase("DONE"))
+                        break;
 
                     Product product = productManager.findById(pId);
                     if (product == null) {
@@ -347,7 +369,8 @@ public class ConsoleUi {
 
                 if (confirm == 1) {
                     // Confirm delegates to InventoryManager for stock check
-                    boolean confirmed = transactionManager.confirmTransaction(transaction, productManager.getProductList());
+                    boolean confirmed = transactionManager.confirmTransaction(transaction,
+                            productManager.getProductList());
                     if (confirmed) {
                         saveAllData();
                         System.out.println("Transaction finalized and saved!");
@@ -414,7 +437,7 @@ public class ConsoleUi {
     }
 
     // --- REPORTING ---
-    private static void reportMenu() {
+    private void reportMenu() {
         ReportManager report = new ReportManager(transactionManager.getTransactionList());
 
         while (true) {
@@ -439,14 +462,16 @@ public class ConsoleUi {
                 pause();
             } else if (choice == 3) {
                 int rType = readInt("Report type (1: Daily, 2: Monthly): ", 1, 2);
-                String val = (rType == 1) ? readString("Input date (YYYY-MM-DD): ") : readString("Input month (YYYY-MM): ");
+                String val = (rType == 1) ? readString("Input date (YYYY-MM-DD): ")
+                        : readString("Input month (YYYY-MM): ");
                 String typeStr = (rType == 1) ? "DAILY" : "MONTHLY";
                 System.out.println("--------------------------------------");
                 report.bestSellingProducts(val, typeStr);
                 pause();
             } else if (choice == 4) {
                 int rType = readInt("Report type (1: Daily, 2: Monthly): ", 1, 2);
-                String val = (rType == 1) ? readString("Input date (YYYY-MM-DD): ") : readString("Input month (YYYY-MM): ");
+                String val = (rType == 1) ? readString("Input date (YYYY-MM-DD): ")
+                        : readString("Input month (YYYY-MM): ");
                 String typeStr = (rType == 1) ? "DAILY" : "MONTHLY";
                 System.out.println("--------------------------------------");
                 report.highestPurchaseCustomer(val, typeStr);

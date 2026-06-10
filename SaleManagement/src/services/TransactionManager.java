@@ -6,7 +6,7 @@ import models.Transaction;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+// import java.util.Map;
 import java.util.UUID;
 
 public class TransactionManager {
@@ -14,9 +14,9 @@ public class TransactionManager {
     private ArrayList<Transaction> transactionList;
     private InventoryManager inventoryManager;
 
-    public TransactionManager() {
+    public TransactionManager(InventoryManager inventoryManager) {
         this.transactionList = new ArrayList<>();
-        this.inventoryManager = new InventoryManager();
+        this.inventoryManager = inventoryManager;
     }
 
     public ArrayList<Transaction> getTransactionList() {
