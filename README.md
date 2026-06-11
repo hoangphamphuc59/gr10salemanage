@@ -5,7 +5,7 @@
 │   └──├── 📄 Main.java
 │       ├── 📁 models
 │       │   ├── 📄 Product.java
-│       │   ├── 📄 Customer.java          (abstract - base class)
+│       │   ├── 📄 Customer.java          
 │       │   ├── 📄 RegularCustomer.java
 │       │   ├── 📄 VIPCustomer.java
 │       │   ├── 📄 Transaction.java
@@ -21,10 +21,10 @@
 │           ├── 📄 FileIOHelper.java
 │           ├── 📄 ValidationHelper.java
 │           └── 📄 SalesException.java
-├── 📁 data                               (BR12: lưu/load dữ liệu)
+├── 📁 data                               
 │   ├── 📄 products.txt
 │   ├── 📄 customers.txt
 │   └── 📄 transactions.txt
-├── 📁 reports                            (Reporting requirements)
+├── 📁 reports                            
 │   └── 📄 report_YYYYMMDD.txt
 └── 📄 README.md
