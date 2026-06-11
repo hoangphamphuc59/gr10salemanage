@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.time.LocalDate;
 
 public class IOHelper {
 
@@ -241,7 +242,7 @@ public class IOHelper {
                             i += 6;
                         }
 
-                        java.time.LocalDate localDate = java.time.LocalDate.parse(dateStr);
+                        LocalDate localDate = LocalDate.parse(dateStr);
                         Transaction transaction = new Transaction(transId, customer, localDate, totalAmount, status, items);
                         traList.add(transaction);
 
