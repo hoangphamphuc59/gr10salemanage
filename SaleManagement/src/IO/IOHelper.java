@@ -64,8 +64,8 @@ public class IOHelper {
     // ==========================================
     public int saveCustomer(ArrayList<Customer> cusList) {
         File fileName = new File(fCus);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
-            for (Customer customer : cusList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {            
+            for (Customer customer: cusList) {
                 writer.write(formatCustomer(customer));
                 writer.newLine();
                 writer.flush();
@@ -92,15 +92,16 @@ public class IOHelper {
 
     public int saveTransaction(ArrayList<Transaction> traList) {
         File fileName = new File(fTra);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
             for (Transaction transaction : traList) {
                 writer.write(formatTransaction(transaction));
                 writer.newLine();
                 writer.flush();
             }
-        } catch (IOException e) {
+        }catch(IOException e){
             return -1;
         }
+        
         return 1;
     }
 

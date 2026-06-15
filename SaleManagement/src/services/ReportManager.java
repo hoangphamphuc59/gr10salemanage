@@ -22,7 +22,7 @@ public class ReportManager {
             if (type.equalsIgnoreCase("DAILY")) {
                 LocalDate targetDate = LocalDate.parse(dateInput);
                 for (Transaction t : traList) {
-                    if ("CONFIRMED".equalsIgnoreCase(t.getStatus()) && t.getDate().equals(targetDate)) {
+                    if (t.getStatus().equalsIgnoreCase("CONFIRMED") && t.getDate().equals(targetDate)) {
                         validTransactions.add(t);
                     }
                 }
@@ -80,15 +80,22 @@ public class ReportManager {
         System.out.println("\n--- TOP 3 HIGHEST SPENDING CUSTOMERS ---");
 
         Map<String, Double> customerSpending = new HashMap<>();
+
         for (Transaction t : filteredList) {
-            String cusName = t.getCustomer() != null ? t.getCustomer().getName() : "Guest";
-            customerSpending.put(cusName, customerSpending.getOrDefault(cusName, 0.0) + t.getTotalAmount());
+            String cusName = t.getCustomer().getName();
+            customerSpending.put(cusName, t.getTotalAmount());
         }
 
-        customerSpending.entrySet().stream()
-                .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
-                .limit(3)
-                .forEach(e -> System.out.printf("  + %s: $%.2f\n", e.getKey(), e.getValue()));
+        customerSpending.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
+
+        int c = 1;
+        for (Map.Entry<String, Double> entry : customerSpending.entrySet()) {
+
+            if (c <= 3) {
+                System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue());
+                c++;
+            }
+        }
     }
 
     public void bestSellingProducts(String dateInput, String type) {
@@ -102,25 +109,37 @@ public class ReportManager {
 
         for (Transaction t : filteredList) {
             for (Map.Entry<Product, Integer> entry : t.getItems().entrySet()) {
-                String pName = entry.getKey().getProductName();
+                Product product = entry.getKey();
+                String pName = product.getProductName();
                 int qty = entry.getValue();
-                double revenue = qty * entry.getKey().getPrice();
+                double rev = qty * product.getPrice();
 
-                productQtyMap.put(pName, productQtyMap.getOrDefault(pName, 0) + qty);
-                productRevMap.put(pName, productRevMap.getOrDefault(pName, 0.0) + revenue);
+                productQtyMap.put(pName, qty);
+                productRevMap.put(pName, rev);
             }
         }
 
         System.out.println("\n--- TOP 3 BEST-SELLING PRODUCTS (BY QUANTITY) ---");
-        productQtyMap.entrySet().stream()
-                .sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
-                .limit(3)
-                .forEach(e -> System.out.printf("  + %s: %d unit(s)\n", e.getKey(), e.getValue()));
+        productQtyMap.entrySet().stream().sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
+
+        int c = 1;
+
+        for (Map.Entry<String, Integer> entry : productQtyMap.entrySet()) {
+            if (c <= 3) {
+                System.out.printf("  + %s: %d unit(s)\n", entry.getKey(), entry.getValue());
+                c++;
+            }
+        }
 
         System.out.println("\n--- TOP 3 BEST-SELLING PRODUCTS (BY REVENUE) ---");
-        productRevMap.entrySet().stream()
-                .sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
-                .limit(3)
-                .forEach(e -> System.out.printf("  + %s: $%.2f\n", e.getKey(), e.getValue()));
+        productRevMap.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
+        c = 1;
+
+        for (Map.Entry<String, Double> entry : productRevMap.entrySet()) {
+            if (c <= 3) {
+                System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue());
+                c++;
+            }
+        }
     }
 }
