@@ -9,7 +9,6 @@
 │       │   ├── 📄 RegularCustomer.java
 │       │   ├── 📄 VIPCustomer.java
 │       │   ├── 📄 Transaction.java
-│       │   └── 📄 TransactionDetail.java
 │       ├── 📁 services
 │       │   ├── 📄 ProductManager.java
 │       │   ├── 📄 CustomerManager.java
@@ -17,10 +16,8 @@
 │       │   └── 📄 ReportManager.java
 │       ├── 📁 ui
 │       │   └── 📄 ConsoleUI.java
-│       └── 📁 utils
+│       └── 📁 IO
 │           ├── 📄 FileIOHelper.java
-│           ├── 📄 ValidationHelper.java
-│           └── 📄 SalesException.java
 ├── 📁 data                               
 │   ├── 📄 products.txt
 │   ├── 📄 customers.txt
