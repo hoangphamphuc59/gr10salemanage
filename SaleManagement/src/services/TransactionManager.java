@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-// import java.util.UUID;
 
 public class TransactionManager {
 
@@ -28,6 +27,7 @@ public class TransactionManager {
     }
 
     public Transaction findById(String id) {
+        id = id.toUpperCase();
         if(transactionList.get(id) != null){
             return transactionList.get(id);
         }
