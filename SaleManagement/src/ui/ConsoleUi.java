@@ -419,7 +419,8 @@ public class ConsoleUi {
                             saveAllData();
                             System.out.println("Transaction finalized and saved!");
                         } else {
-                            System.out.println("Transaction failed (possibly out of stock).");
+                            saveAllData();
+                            System.out.println("Transaction failed (possibly out of stock), SAVE AS FAILED.");
                         }
                     }
                 }
