@@ -25,6 +25,4 @@
 │   ├── 📄 products.txt
 │   ├── 📄 customers.txt
 │   └── 📄 transactions.txt
-├── 📁 reports                            
-│   └── 📄 report_YYYYMMDD.txt
 └── 📄 README.md
