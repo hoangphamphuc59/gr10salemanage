@@ -35,17 +35,21 @@ public class IOHelper {
     // FORMAT HELPERS
     // ==========================================
     private String formatCustomer(Customer customer) {
-        return String.format("|%s|%s|%s|%s|%s|%d|%s|%.2f|", customer.getId(), customer.getName(), customer.getPhone(), customer.getEmail(), customer.getAddress(), customer.getAge(), customer.getGender(), customer.getDiscount());
+        return String.format("|%s|%s|%s|%s|%s|%d|%s|%.2f|", customer.getId(), customer.getName(),
+                customer.getPhone(), customer.getEmail(), customer.getAddress(),
+                customer.getAge(), customer.getGender(), customer.getDiscount());
     }
 
     private String formatProduct(Product product) {
-        return String.format("|%s|%s|%s|%.2f|%d|", product.getProductId(), product.getProductName(), product.getCategory(), product.getPrice(), product.getStock());
+        return String.format("|%s|%s|%s|%.2f|%d|", product.getProductId(), product.getProductName(),
+                product.getCategory(), product.getPrice(), product.getStock());
     }
 
     private String formatTransaction(Transaction transaction) {
         String result = String.format("|%s", transaction.getTransactionId())
                 + formatCustomer(transaction.getCustomer())
-                + String.format("%s|%.2f|%s|", transaction.getDate(), transaction.getTotalAmount(), transaction.getStatus());
+                + String.format("%s|%.2f|%s|", transaction.getDate(), transaction.getTotalAmount(),
+                        transaction.getStatus());
 
         HashMap<Product, Integer> items = transaction.getItems();
 
@@ -64,8 +68,8 @@ public class IOHelper {
     // ==========================================
     public int saveCustomer(ArrayList<Customer> cusList) {
         File fileName = new File(fCus);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {            
-            for (Customer customer: cusList) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+            for (Customer customer : cusList) {
                 writer.write(formatCustomer(customer));
                 writer.newLine();
                 writer.flush();
@@ -90,18 +94,18 @@ public class IOHelper {
         return 1;
     }
 
-    public int saveTransaction(ArrayList<Transaction> traList) {
+    public int saveTransaction(Map <String, Transaction> traList) {
         File fileName = new File(fTra);
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
-            for (Transaction transaction : traList) {
-                writer.write(formatTransaction(transaction));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Map.Entry <String, Transaction> transaction : traList.entrySet()) {
+                writer.write(formatTransaction(transaction.getValue()));
                 writer.newLine();
                 writer.flush();
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             return -1;
         }
-        
+
         return 1;
     }
 
@@ -123,7 +127,8 @@ public class IOHelper {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
 
                 String[] tokens = line.split("\\|");
                 if (tokens.length >= 9) {
@@ -164,7 +169,8 @@ public class IOHelper {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
 
                 String[] tokens = line.split("\\|");
                 if (tokens.length >= 6) {
@@ -183,8 +189,8 @@ public class IOHelper {
         return proList;
     }
 
-    public ArrayList<Transaction> loadTransaction() {
-        ArrayList<Transaction> traList = new ArrayList<>();
+    public Map<String, Transaction> loadTransaction() {
+        Map<String, Transaction> traList = new HashMap<>();
         File fileName = new File(fTra);
         if (!fileName.exists()) {
             try {
@@ -198,7 +204,8 @@ public class IOHelper {
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+                if (line.trim().isEmpty())
+                    continue;
 
                 String[] tokens = line.split("\\|");
 
@@ -229,7 +236,8 @@ public class IOHelper {
                         int i = 13;
                         while (i < tokens.length) {
                             String currentToken = tokens[i].trim();
-                            if (currentToken.equals("#") || currentToken.isEmpty()) break;
+                            if (currentToken.equals("#") || currentToken.isEmpty())
+                                break;
 
                             int quantity = Integer.parseInt(currentToken);
                             String prodId = tokens[i + 1].trim();
@@ -245,7 +253,9 @@ public class IOHelper {
 
                         LocalDate localDate = LocalDate.parse(dateStr);
                         Transaction transaction = new Transaction(transId, customer, localDate, totalAmount, status, items);
-                        traList.add(transaction);
+                        
+                        // Đã sửa dòng dưới đây: Dùng put(key, value) thay vì add()
+                        traList.put(transId, transaction);
 
                     } catch (Exception e) {
                         System.out.println("Error processing transaction line, skipping.");

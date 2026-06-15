@@ -1,1 +1,2 @@
-|3DFFAF39|SE210370|Phuc|hoa@mail.com|01234|a me ri ca|19|male|0.05|2026-06-11|57.00|CONFIRMED|3|P222|bac xiu|food|20.00|37|#|
+|TR1|SE123|abc|000|hoang@123|hcm|12|male|0.00|2026-06-15|3000.00|CONFIRMED|3|111|a|food|1000.00|89|#|
+|TR2|SE210370|Phuc|hoa@mail.com|01234|a me ri ca|19|male|0.05|2026-06-15|1900.00|CONFIRMED|2|111|a|food|1000.00|89|#|

@@ -6,38 +6,37 @@ import models.Transaction;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-// import java.util.Map;
-import java.util.UUID;
+import java.util.Map;
+// import java.util.UUID;
 
 public class TransactionManager {
 
-    private ArrayList<Transaction> transactionList;
+    private Map <String, Transaction> transactionList;
     private final InventoryManager inventoryManager;
 
     public TransactionManager(InventoryManager inventoryManager) {
-        this.transactionList = new ArrayList<>();
+        this.transactionList = new HashMap<>();
         this.inventoryManager = inventoryManager;
     }
 
-    public ArrayList<Transaction> getTransactionList() {
+    public Map <String, Transaction> getTransactionList() {
         return transactionList;
     }
 
-    public void setTransactionList(ArrayList<Transaction> transactionList) {
+    public void setTransactionList(Map <String, Transaction> transactionList) {
         this.transactionList = transactionList;
     }
 
     public Transaction findById(String id) {
-        for (Transaction t : transactionList) {
-            if (t.getTransactionId().equalsIgnoreCase(id)) {
-                return t;
-            }
+        if(transactionList.get(id) != null){
+            return transactionList.get(id);
         }
         return null;
     }
 
     public String generateTransactionId() {
-        return UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+            String tmp = "TR";
+            return tmp + (transactionList.size()+1);
     }
 
     public Transaction createTransaction(String transId, Customer customer, HashMap<Product, Integer> cart) {
@@ -45,6 +44,7 @@ public class TransactionManager {
 
         Transaction transaction = new Transaction(transId, customer, LocalDate.now(), 0.0, "PENDING", cart);
         transaction.calculateTotal();
+        transactionList.put(transId, transaction);
         return transaction;
     }
 
@@ -67,7 +67,7 @@ public class TransactionManager {
             inventoryManager.deductStock(transaction, productList);
             transaction.calculateTotal();
             transaction.setStatus("CONFIRMED");
-            transactionList.add(transaction);
+            transactionList.put(transaction.getTransactionId(), transaction);
             return true;
         } else {
             transaction.setStatus("FAILED");

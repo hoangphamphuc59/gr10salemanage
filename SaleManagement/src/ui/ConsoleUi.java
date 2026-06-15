@@ -377,7 +377,7 @@ public class ConsoleUi {
                     }
                 } else {
                     transactionManager.cancelTransaction(transaction);
-                    transactionManager.getTransactionList().add(transaction);
+                    transactionManager.getTransactionList().put(transaction.getTransactionId(), transaction);
                     saveAllData();
                     System.out.println("Transaction cancelled and saved to history.");
                 }
@@ -396,7 +396,8 @@ public class ConsoleUi {
                 } else {
                     System.out.println("1. Update product quantity");
                     System.out.println("2. Cancel transaction");
-                    int act = readInt("Choose action (1 or 2): ", 1, 2);
+                    System.out.println("3. Confirm transaction");
+                    int act = readInt("Choose action (1 to 3): ", 1, 3);
 
                     if (act == 1) {
                         String pId = readString("Input Product ID to update: ");
@@ -408,22 +409,30 @@ public class ConsoleUi {
                         } else {
                             System.out.println("Product not found in this transaction.");
                         }
-                    } else {
+                    } else if (act == 2) {
                         transactionManager.cancelTransaction(t);
                         saveAllData();
                         System.out.println("Transaction cancelled!");
+                    } else if (act == 3) {
+                        boolean confirmed = transactionManager.confirmTransaction(t, productManager.getProductList());
+                        if (confirmed) {
+                            saveAllData();
+                            System.out.println("Transaction finalized and saved!");
+                        } else {
+                            System.out.println("Transaction failed (possibly out of stock).");
+                        }
                     }
                 }
                 pause();
 
             } else if (choice == 3) {
                 System.out.println("--------------------------------------");
-                ArrayList<Transaction> transactions = transactionManager.getTransactionList();
+                Map <String, Transaction> transactions = transactionManager.getTransactionList();
                 if (transactions.isEmpty()) {
                     System.out.println("No transactions found.");
                 } else {
-                    for (Transaction t : transactions) {
-                        t.displayTransaction();
+                    for (Map.Entry <String, Transaction> t : transactions.entrySet()) {
+                        t.getValue().displayTransaction();
                     }
                 }
                 pause();

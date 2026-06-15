@@ -9,9 +9,9 @@ import java.util.*;
 
 public class ReportManager {
 
-    private ArrayList<Transaction> traList;
+    private Map <String, Transaction> traList;
 
-    public ReportManager(ArrayList<Transaction> traList) {
+    public ReportManager(Map <String, Transaction> traList) {
         this.traList = traList;
     }
 
@@ -21,17 +21,17 @@ public class ReportManager {
         try {
             if (type.equalsIgnoreCase("DAILY")) {
                 LocalDate targetDate = LocalDate.parse(dateInput);
-                for (Transaction t : traList) {
-                    if (t.getStatus().equalsIgnoreCase("CONFIRMED") && t.getDate().equals(targetDate)) {
-                        validTransactions.add(t);
+                for (Map.Entry <String, Transaction> t: traList.entrySet()) {
+                    if (t.getValue().getStatus().equalsIgnoreCase("CONFIRMED") && t.getValue().getDate().equals(targetDate)) {
+                        validTransactions.add(t.getValue());
                     }
                 }
             } else if (type.equalsIgnoreCase("MONTHLY")) {
                 YearMonth targetMonth = YearMonth.parse(dateInput);
-                for (Transaction t : traList) {
-                    YearMonth transMonth = YearMonth.from(t.getDate());
-                    if ("CONFIRMED".equalsIgnoreCase(t.getStatus()) && transMonth.equals(targetMonth)) {
-                        validTransactions.add(t);
+                for (Map.Entry <String, Transaction> t: traList.entrySet()) {
+                    YearMonth transMonth = YearMonth.from(t.getValue().getDate());
+                    if ("CONFIRMED".equalsIgnoreCase(t.getValue().getStatus()) && transMonth.equals(targetMonth)) {
+                        validTransactions.add(t.getValue());
                     }
                 }
             }
@@ -83,14 +83,13 @@ public class ReportManager {
 
         for (Transaction t : filteredList) {
             String cusName = t.getCustomer().getName();
-            customerSpending.put(cusName, t.getTotalAmount());
+            customerSpending.put(cusName, customerSpending.getOrDefault(cusName, 0.0) + t.getTotalAmount());
         }
 
         customerSpending.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
 
         int c = 1;
         for (Map.Entry<String, Double> entry : customerSpending.entrySet()) {
-
             if (c <= 3) {
                 System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue());
                 c++;
@@ -114,8 +113,8 @@ public class ReportManager {
                 int qty = entry.getValue();
                 double rev = qty * product.getPrice();
 
-                productQtyMap.put(pName, qty);
-                productRevMap.put(pName, rev);
+                productQtyMap.put(pName, productQtyMap.getOrDefault(pName, 0) + qty);
+                productRevMap.put(pName, productRevMap.getOrDefault(pName, 0.0) + rev);
             }
         }
 
@@ -123,7 +122,6 @@ public class ReportManager {
         productQtyMap.entrySet().stream().sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
 
         int c = 1;
-
         for (Map.Entry<String, Integer> entry : productQtyMap.entrySet()) {
             if (c <= 3) {
                 System.out.printf("  + %s: %d unit(s)\n", entry.getKey(), entry.getValue());
@@ -133,8 +131,8 @@ public class ReportManager {
 
         System.out.println("\n--- TOP 3 BEST-SELLING PRODUCTS (BY REVENUE) ---");
         productRevMap.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
-        c = 1;
 
+        c = 1;
         for (Map.Entry<String, Double> entry : productRevMap.entrySet()) {
             if (c <= 3) {
                 System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue());
