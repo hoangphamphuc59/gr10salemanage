@@ -72,7 +72,6 @@ public class IOHelper {
             for (Customer customer : cusList) {
                 writer.write(formatCustomer(customer));
                 writer.newLine();
-                writer.flush();
             }
         } catch (IOException e) {
             return -1;
@@ -86,7 +85,6 @@ public class IOHelper {
             for (Product product : proList) {
                 writer.write(formatProduct(product));
                 writer.newLine();
-                writer.flush();
             }
         } catch (IOException e) {
             return -1;
@@ -100,7 +98,6 @@ public class IOHelper {
             for (Map.Entry <String, Transaction> transaction : traList.entrySet()) {
                 writer.write(formatTransaction(transaction.getValue()));
                 writer.newLine();
-                writer.flush();
             }
         } catch (IOException e) {
             return -1;

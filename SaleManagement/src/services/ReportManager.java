@@ -9,9 +9,9 @@ import java.util.*;
 
 public class ReportManager {
 
-    private Map <String, Transaction> traList;
+    private Map<String, Transaction> traList;
 
-    public ReportManager(Map <String, Transaction> traList) {
+    public ReportManager(Map<String, Transaction> traList) {
         this.traList = traList;
     }
 
@@ -21,14 +21,15 @@ public class ReportManager {
         try {
             if (type.equalsIgnoreCase("DAILY")) {
                 LocalDate targetDate = LocalDate.parse(dateInput);
-                for (Map.Entry <String, Transaction> t: traList.entrySet()) {
-                    if (t.getValue().getStatus().equalsIgnoreCase("CONFIRMED") && t.getValue().getDate().equals(targetDate)) {
+                for (Map.Entry<String, Transaction> t : traList.entrySet()) {
+                    if (t.getValue().getStatus().equalsIgnoreCase("CONFIRMED")
+                            && t.getValue().getDate().equals(targetDate)) {
                         validTransactions.add(t.getValue());
                     }
                 }
             } else if (type.equalsIgnoreCase("MONTHLY")) {
                 YearMonth targetMonth = YearMonth.parse(dateInput);
-                for (Map.Entry <String, Transaction> t: traList.entrySet()) {
+                for (Map.Entry<String, Transaction> t : traList.entrySet()) {
                     YearMonth transMonth = YearMonth.from(t.getValue().getDate());
                     if ("CONFIRMED".equalsIgnoreCase(t.getValue().getStatus()) && transMonth.equals(targetMonth)) {
                         validTransactions.add(t.getValue());
@@ -36,7 +37,8 @@ public class ReportManager {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Invalid date format! Please use 'yyyy-MM-dd' for daily and 'yyyy-MM' for monthly reports.");
+            System.out.println(
+                    "Invalid date format! Please use 'yyyy-MM-dd' for daily and 'yyyy-MM' for monthly reports.");
         }
         return validTransactions;
     }
