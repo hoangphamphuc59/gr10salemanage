@@ -3,6 +3,8 @@ package ui;
 import IO.IOHelper;
 import models.*;
 import services.*;
+import services.Validation.CustomerValidation;
+
 import java.util.*;
 
 public class ConsoleUi {
@@ -10,16 +12,19 @@ public class ConsoleUi {
     private final ProductManager productManager;
     private final CustomerManager customerManager;
     private final TransactionManager transactionManager;
+    private final CustomerValidation customerValidation;
     private final Scanner sc;
 
     public ConsoleUi(IOHelper ioHelper,
             ProductManager productManager,
             CustomerManager customerManager,
-            TransactionManager transactionManager) {
+            TransactionManager transactionManager,
+            CustomerValidation customerValidation) {
         this.ioHelper = ioHelper;
         this.productManager = productManager;
         this.customerManager = customerManager;
         this.transactionManager = transactionManager;
+        this.customerValidation = customerValidation;
         this.sc = new Scanner(System.in);
     }
 
@@ -102,6 +107,18 @@ public class ConsoleUi {
         return value;
     }
 
+    private String readCustomerField(String prompt, String fieldName) {
+        while (true) {
+            String rawValue = readString(prompt);
+            try {
+                if(rawValue == null) throw new IllegalArgumentException("Cannot empty");
+                return customerValidation.validate(fieldName, rawValue);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid input: " + e.getMessage());
+            }
+        }
+    }
+
     // ==========================================
     // MENUS
     // ==========================================
@@ -148,6 +165,7 @@ public class ConsoleUi {
 
             if (choice == 1) {
                 String id = readString("Input product ID: ");
+                
                 String name = readString("Input product name: ");
                 String cat = readString("Input product category: ");
                 double price = readDouble("Input product price: ", 0.01, Double.MAX_VALUE);
@@ -237,9 +255,9 @@ public class ConsoleUi {
             int choice = readInt("Please enter your choice (0-4): ", 0, 4);
 
             if (choice == 1) {
-                String id = readString("Input customer ID: ");
-                String name = readString("Input customer name: ");
-                String phone = readString("Input phone: ");
+                String id = readCustomerField("Input customer ID: ", "id");
+                String name = readCustomerField("Input customer name: ", "name");
+                String phone = readCustomerField("Input phone: ", "phone");
                 String email = readString("Input email: ");
                 String address = readString("Input address: ");
                 int age = readInt("Input age: ", 1, 150);
@@ -261,12 +279,12 @@ public class ConsoleUi {
                 pause();
 
             } else if (choice == 2) {
-                String id = readString("Input ID of customer to update: ");
+                String id = readCustomerField("Input ID of customer to update: ", "id");
                 if (customerManager.findById(id) == null) {
                     System.out.println("Customer not found!");
                 } else {
-                    String name = readString("Input new name: ");
-                    String phone = readString("Input new phone: ");
+                    String name = readCustomerField("Input new name: ", "name");
+                    String phone = readCustomerField("Input new phone: ", "phone");
                     String email = readString("Input new email: ");
                     String address = readString("Input new address: ");
                     int age = readInt("Input new age: ", 1, 150);
@@ -428,11 +446,11 @@ public class ConsoleUi {
 
             } else if (choice == 3) {
                 System.out.println("--------------------------------------");
-                Map <String, Transaction> transactions = transactionManager.getTransactionList();
+                Map<String, Transaction> transactions = transactionManager.getTransactionList();
                 if (transactions.isEmpty()) {
                     System.out.println("No transactions found.");
                 } else {
-                    for (Map.Entry <String, Transaction> t : transactions.entrySet()) {
+                    for (Map.Entry<String, Transaction> t : transactions.entrySet()) {
                         t.getValue().displayTransaction();
                     }
                 }

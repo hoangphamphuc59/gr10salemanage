@@ -2,16 +2,13 @@ import IO.IOHelper;
 // import models.Customer;
 // import models.Product;
 // import models.Transaction;
-import services.CustomerManager;
-import services.InventoryManager;
-import services.ProductManager;
 // import services.ReportManager;
-import services.TransactionManager;
 // import java.util.ArrayList;
 // import java.util.HashMap;
 // import java.util.Scanner;
 import ui.ConsoleUi;
-
+import services.*;
+import services.Validation.CustomerValidation;
 public class Main {
 
     public static void main(String[] args) {
@@ -20,7 +17,9 @@ public class Main {
         CustomerManager customerManager = new CustomerManager();
         InventoryManager inventoryManager = new InventoryManager();
         TransactionManager transactionManager = new TransactionManager(inventoryManager);
-        ConsoleUi ui = new ConsoleUi(ioHelper, productManager, customerManager, transactionManager);
+        CustomerValidation customerValidation = new CustomerValidation();
+        ConsoleUi ui = new ConsoleUi(ioHelper, productManager, 
+            customerManager, transactionManager, customerValidation);
 
         ui.start();
         ui.mainMenu();
