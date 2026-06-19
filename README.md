@@ -10,6 +10,9 @@
 │       │   ├── 📄 VIPCustomer.java
 │       │   ├── 📄 Transaction.java
 │       ├── 📁 services
+|       |   ├── 📁 Validator
+|       |       |──📄 Validator.java
+|       |       |──📄 CustomerValidation.java
 │       │   ├── 📄 ProductManager.java
 │       │   ├── 📄 CustomerManager.java
 │       │   ├── 📄 TransactionManager.java
