@@ -258,7 +258,7 @@ public class ConsoleUi {
                 String id = readCustomerField("Input customer ID: ", "id");
                 String name = readCustomerField("Input customer name: ", "name");
                 String phone = readCustomerField("Input phone: ", "phone");
-                String email = readString("Input email: ");
+                String email = readCustomerField("Input email: ", "email");
                 String address = readString("Input address: ");
                 int age = readInt("Input age: ", 1, 150);
                 String gender = readString("Input gender: ");

@@ -21,6 +21,7 @@ public class CustomerManager {
     }
 
     public Customer findById(String id) {
+        id = id.toUpperCase();
         for (Customer c : customerList) {
             if (c.getId().equalsIgnoreCase(id)) {
                 return c;
