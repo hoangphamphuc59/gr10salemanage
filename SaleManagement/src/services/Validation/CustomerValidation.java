@@ -1,7 +1,5 @@
 package services.Validation;
 
-import services.CustomerManager;
-
 public class CustomerValidation implements Validator<String> {
 
     @Override
