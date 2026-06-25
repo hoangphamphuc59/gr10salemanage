@@ -88,15 +88,9 @@ public class ReportManager {
             customerSpending.put(cusName, customerSpending.getOrDefault(cusName, 0.0) + t.getTotalAmount());
         }
 
-        customerSpending.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
-
-        int c = 1;
-        for (Map.Entry<String, Double> entry : customerSpending.entrySet()) {
-            if (c <= 3) {
-                System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue());
-                c++;
-            }
-        }
+        customerSpending.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
+                .limit(3).forEach(entry -> System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue()));
+        
     }
 
     public void bestSellingProducts(String dateInput, String type) {
@@ -121,25 +115,12 @@ public class ReportManager {
         }
 
         System.out.println("\n--- TOP 3 BEST-SELLING PRODUCTS (BY QUANTITY) ---");
-        productQtyMap.entrySet().stream().sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()));
-
-        int c = 1;
-        for (Map.Entry<String, Integer> entry : productQtyMap.entrySet()) {
-            if (c <= 3) {
-                System.out.printf("  + %s: %d unit(s)\n", entry.getKey(), entry.getValue());
-                c++;
-            }
-        }
+        productQtyMap.entrySet().stream().sorted((e1, e2) -> Integer.compare(e2.getValue(), e1.getValue()))
+                .limit(3).forEach(entry -> System.out.printf("  + %s: %d unit(s)\n", entry.getKey(), entry.getValue()));
 
         System.out.println("\n--- TOP 3 BEST-SELLING PRODUCTS (BY REVENUE) ---");
-        productRevMap.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()));
+        productRevMap.entrySet().stream().sorted((e1, e2) -> Double.compare(e2.getValue(), e1.getValue()))
+                .limit(3).forEach(entry -> System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue()));
 
-        c = 1;
-        for (Map.Entry<String, Double> entry : productRevMap.entrySet()) {
-            if (c <= 3) {
-                System.out.printf("  + %s: $%.2f\n", entry.getKey(), entry.getValue());
-                c++;
-            }
-        }
     }
 }
