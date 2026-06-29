@@ -1,5 +1,5 @@
 package services.Validation;
-
+import static services.Validation.StringUtils.*;
 public class CustomerValidation implements Validator<String> {
 
     @Override
