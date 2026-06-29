@@ -12,6 +12,7 @@
 │       ├── 📁 services
 |       |   ├── 📁 Validator
 |       |       |──📄 Validator.java
+|       |       |──📄 StringUtils.java
 |       |       |──📄 CustomerValidation.java
 │       │   ├── 📄 ProductManager.java
 │       │   ├── 📄 CustomerManager.java
