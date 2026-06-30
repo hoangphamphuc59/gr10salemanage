@@ -39,7 +39,7 @@ public class ConsoleUi {
         customerManager.setCustomerList(ioHelper.loadCustomer());
         transactionManager.setTransactionList(ioHelper.loadTransaction());
 
-        System.out.println("System started and data loaded successfully.");
+        ConsoleColor.printSuccess("System started and data loaded successfully.");
     }
 
     private void saveAllData() {
@@ -64,12 +64,12 @@ public class ConsoleUi {
                 System.out.print(prompt);
                 value = Integer.parseInt(sc.nextLine());
                 if (value < min || value > max) {
-                    System.out.println("input out of range (" + min + " to " + max + "), input again!");
+                    ConsoleColor.printError("input out of range (" + min + " to " + max + "), input again!");
                     continue;
                 }
                 break;
             } catch (Exception e) {
-                System.out.println("wrong input format, input again!");
+                ConsoleColor.printError("wrong input format, input again!");
             }
         }
         return value;
@@ -82,12 +82,12 @@ public class ConsoleUi {
                 System.out.print(prompt);
                 value = Double.parseDouble(sc.nextLine());
                 if (value < min || value > max) {
-                    System.out.println("input out of range, input again!");
+                    ConsoleColor.printError("input out of range, input again!");
                     continue;
                 }
                 break;
             } catch (Exception e) {
-                System.out.println("wrong input format, input again!");
+                ConsoleColor.printError("wrong input format, input again!");
             }
         }
         return value;
@@ -99,7 +99,7 @@ public class ConsoleUi {
             System.out.print(prompt);
             value = sc.nextLine().trim();
             if (value.isEmpty()) {
-                System.out.println("input cannot be empty, input again!");
+                ConsoleColor.printError("input cannot be empty, input again!");
                 continue;
             }
             break;
@@ -114,7 +114,7 @@ public class ConsoleUi {
                 if(rawValue == null) throw new IllegalArgumentException("Cannot empty");
                 return customerValidation.validate(fieldName, rawValue);
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid input: " + e.getMessage());
+                ConsoleColor.printError("Invalid input: " + e.getMessage());
             }
         }
     }
@@ -174,16 +174,16 @@ public class ConsoleUi {
                 boolean result = productManager.addProduct(id, name, cat, price, stock);
                 if (result) {
                     saveAllData();
-                    System.out.println("Product added successfully!");
+                    ConsoleColor.printSuccess("Product added successfully!");
                 } else {
-                    System.out.println("Failed to add product! (ID may already exist or invalid input)");
+                    ConsoleColor.printError("Failed to add product! (ID may already exist or invalid input)");
                 }
                 pause();
 
             } else if (choice == 2) {
                 String id = readString("Input ID of product to update: ");
                 if (productManager.findById(id) == null) {
-                    System.out.println("Product not found!");
+                    ConsoleColor.printError("Product not found!");
                 } else {
                     String name = readString("Input new product name: ");
                     String cat = readString("Input new category: ");
@@ -193,9 +193,9 @@ public class ConsoleUi {
                     boolean result = productManager.updateProduct(id, name, cat, price, stock);
                     if (result) {
                         saveAllData();
-                        System.out.println("Product updated successfully!");
+                        ConsoleColor.printSuccess("Product updated successfully!");
                     } else {
-                        System.out.println("Failed to update product!");
+                        ConsoleColor.printError("Failed to update product!");
                     }
                 }
                 pause();
@@ -205,9 +205,9 @@ public class ConsoleUi {
                 boolean result = productManager.removeProduct(id);
                 if (result) {
                     saveAllData();
-                    System.out.println("Product removed successfully!");
+                    ConsoleColor.printSuccess("Product removed successfully!");
                 } else {
-                    System.out.println("Product not found!");
+                    ConsoleColor.printError("Product not found!");
                 }
                 pause();
 
@@ -215,7 +215,7 @@ public class ConsoleUi {
                 System.out.println("--------------------------------------");
                 ArrayList<Product> products = productManager.getProductList();
                 if (products.isEmpty()) {
-                    System.out.println("No products available.");
+                    ConsoleColor.printError("No products available.");
                 } else {
                     for (Product p : products) {
                         p.showProduct();
@@ -228,7 +228,7 @@ public class ConsoleUi {
                 System.out.println("--------------------------------------");
                 ArrayList<Product> results = productManager.searchByNameOrCategory(keyword);
                 if (results.isEmpty()) {
-                    System.out.println("No products found matching '" + keyword + "'.");
+                    ConsoleColor.printError("No products found matching '" + keyword + "'.");
                 } else {
                     for (Product p : results) {
                         p.showProduct();
@@ -272,16 +272,16 @@ public class ConsoleUi {
                 boolean result = customerManager.addCustomer(cus);
                 if (result) {
                     saveAllData();
-                    System.out.println("Customer added successfully!");
+                    ConsoleColor.printSuccess("Customer added successfully!");
                 } else {
-                    System.out.println("Failed to add customer! (ID may already exist or invalid input)");
+                    ConsoleColor.printError("Failed to add customer! (ID may already exist or invalid input)");
                 }
                 pause();
 
             } else if (choice == 2) {
                 String id = readCustomerField("Input ID of customer to update: ", "id");
                 if (customerManager.findById(id) == null) {
-                    System.out.println("Customer not found!");
+                    ConsoleColor.printError("Customer not found!");
                 } else {
                     String name = readCustomerField("Input new name: ", "name");
                     String phone = readCustomerField("Input new phone: ", "phone");
@@ -293,9 +293,9 @@ public class ConsoleUi {
                     boolean result = customerManager.updateCustomer(id, name, phone, email, address, age, gender);
                     if (result) {
                         saveAllData();
-                        System.out.println("Customer updated successfully!");
+                        ConsoleColor.printSuccess("Customer updated successfully!");
                     } else {
-                        System.out.println("Failed to update customer!");
+                        ConsoleColor.printError("Failed to update customer!");
                     }
                 }
                 pause();
@@ -305,9 +305,9 @@ public class ConsoleUi {
                 boolean result = customerManager.removeCustomer(id);
                 if (result) {
                     saveAllData();
-                    System.out.println("Customer removed successfully!");
+                    ConsoleColor.printSuccess("Customer removed successfully!");
                 } else {
-                    System.out.println("Customer not found!");
+                    ConsoleColor.printError("Customer not found!");
                 }
                 pause();
 
@@ -315,7 +315,7 @@ public class ConsoleUi {
                 System.out.println("--------------------------------------");
                 ArrayList<Customer> customers = customerManager.getCustomerList();
                 if (customers.isEmpty()) {
-                    System.out.println("No customers available.");
+                    ConsoleColor.printError("No customers available.");
                 } else {
                     for (Customer c : customers) {
                         System.out.printf("ID: %s | Name: %s | Phone: %s | VIP Discount: %.2f\n",
@@ -347,7 +347,7 @@ public class ConsoleUi {
                 String cusId = readString("Input Customer ID for this transaction: ");
                 Customer customer = customerManager.findById(cusId);
                 if (customer == null) {
-                    System.out.println("Customer not found. Transaction aborted.");
+                    ConsoleColor.printError("Customer not found. Transaction aborted.");
                     continue;
                 }
 
@@ -360,23 +360,23 @@ public class ConsoleUi {
 
                     Product product = productManager.findById(pId);
                     if (product == null) {
-                        System.out.println("Product not found!");
+                        ConsoleColor.printError("Product not found!");
                         continue;
                     }
 
                     int qty = readInt("Input quantity to buy: ", 1, Integer.MAX_VALUE);
                     cart.put(product, cart.getOrDefault(product, 0) + qty);
-                    System.out.println("Added " + qty + " of " + product.getProductName() + " to cart.");
+                    ConsoleColor.printSuccess("Added " + qty + " of " + product.getProductName() + " to cart.");
                 }
 
                 if (cart.isEmpty()) {
-                    System.out.println("Transaction must have at least one product. Transaction aborted.");
+                    ConsoleColor.printError("Transaction must have at least one product. Transaction aborted.");
                     continue;
                 }
 
                 Transaction transaction = transactionManager.createTransaction(transId, customer, cart);
                 if (transaction == null) {
-                    System.out.println("Failed to create transaction.");
+                    ConsoleColor.printError("Failed to create transaction.");
                     continue;
                 }
 
@@ -389,15 +389,15 @@ public class ConsoleUi {
                             productManager.getProductList());
                     if (confirmed) {
                         saveAllData();
-                        System.out.println("Transaction finalized and saved!");
+                        ConsoleColor.printSuccess("Transaction finalized and saved!");
                     } else {
-                        System.out.println("Transaction failed (possibly out of stock).");
+                        ConsoleColor.printError("Transaction failed (possibly out of stock).");
                     }
                 } else {
                     transactionManager.cancelTransaction(transaction);
                     transactionManager.getTransactionList().put(transaction.getTransactionId(), transaction);
                     saveAllData();
-                    System.out.println("Transaction cancelled and saved to history.");
+                    ConsoleColor.printSuccess("Transaction cancelled and saved to history.");
                 }
                 pause();
 
@@ -406,11 +406,11 @@ public class ConsoleUi {
                 Transaction t = transactionManager.findById(tId);
 
                 if (t == null) {
-                    System.out.println("Transaction not found!");
+                    ConsoleColor.printError("Transaction not found!");
                 } else if ("CONFIRMED".equalsIgnoreCase(t.getStatus())) {
-                    System.out.println("Cannot update a confirmed transaction.");
+                    ConsoleColor.printError("Cannot update a confirmed transaction.");
                 } else if ("CANCELLED".equalsIgnoreCase(t.getStatus())) {
-                    System.out.println("Transaction is already cancelled.");
+                    ConsoleColor.printError("Transaction is already cancelled.");
                 } else {
                     System.out.println("1. Update product quantity");
                     System.out.println("2. Cancel transaction");
@@ -423,22 +423,22 @@ public class ConsoleUi {
                         boolean updated = transactionManager.updateProductQuantity(t, pId, newQty);
                         if (updated) {
                             saveAllData();
-                            System.out.println("Transaction updated!");
+                            ConsoleColor.printSuccess("Transaction updated!");
                         } else {
-                            System.out.println("Product not found in this transaction.");
+                            ConsoleColor.printError("Product not found in this transaction.");
                         }
                     } else if (act == 2) {
                         transactionManager.cancelTransaction(t);
                         saveAllData();
-                        System.out.println("Transaction cancelled!");
+                        ConsoleColor.printSuccess("Transaction cancelled!");
                     } else if (act == 3) {
                         boolean confirmed = transactionManager.confirmTransaction(t, productManager.getProductList());
                         if (confirmed) {
                             saveAllData();
-                            System.out.println("Transaction finalized and saved!");
+                            ConsoleColor.printSuccess("Transaction finalized and saved!");
                         } else {
                             saveAllData();
-                            System.out.println("Transaction failed (possibly out of stock), SAVE AS FAILED.");
+                            ConsoleColor.printError("Transaction failed (possibly out of stock), SAVE AS FAILED.");
                         }
                     }
                 }
@@ -448,7 +448,7 @@ public class ConsoleUi {
                 System.out.println("--------------------------------------");
                 Map<String, Transaction> transactions = transactionManager.getTransactionList();
                 if (transactions.isEmpty()) {
-                    System.out.println("No transactions found.");
+                    ConsoleColor.printError("No transactions found.");
                 } else {
                     for (Map.Entry<String, Transaction> t : transactions.entrySet()) {
                         t.getValue().displayTransaction();

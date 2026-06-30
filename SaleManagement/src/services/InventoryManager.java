@@ -5,6 +5,7 @@ import models.Transaction;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import ui.ConsoleColor;
 
 public class InventoryManager {
 
@@ -26,12 +27,12 @@ public class InventoryManager {
             Product inventoryProduct = findProductById(productList, buyProductId);
 
             if (inventoryProduct == null) {
-                System.out.println("Error: Product ID [" + buyProductId + "] not found in inventory.");
+                ConsoleColor.printError("Error: Product ID [" + buyProductId + "] not found in inventory.");
                 return false;
             }
 
             if (inventoryProduct.getStock() < buyQuantity) {
-                System.out.println("Error: Product [" + inventoryProduct.getProductName() +
+                ConsoleColor.printError("Error: Product [" + inventoryProduct.getProductName() +
                                    "] only has " + inventoryProduct.getStock() +
                                    " in stock. Cannot sell " + buyQuantity + ".");
                 return false;

@@ -6,6 +6,7 @@ import models.Transaction;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.*;
+import ui.ConsoleColor;
 
 public class ReportManager {
 
@@ -37,7 +38,7 @@ public class ReportManager {
                 }
             }
         } catch (Exception e) {
-            System.out.println(
+            ConsoleColor.printError(
                     "Invalid date format! Please use 'yyyy-MM-dd' for daily and 'yyyy-MM' for monthly reports.");
         }
         return validTransactions;
@@ -55,7 +56,7 @@ public class ReportManager {
 
     private void generateGeneralReport(List<Transaction> filteredList) {
         if (filteredList.isEmpty()) {
-            System.out.println("No successful transactions found for this period.");
+            ConsoleColor.printError("No successful transactions found for this period.");
             return;
         }
 

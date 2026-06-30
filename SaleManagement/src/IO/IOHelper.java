@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import ui.ConsoleColor;
 import java.time.LocalDate;
 
 public class IOHelper {
@@ -116,7 +117,7 @@ public class IOHelper {
             try {
                 fileName.createNewFile();
             } catch (IOException e) {
-                System.out.println("Could not create file: " + fCus);
+                ConsoleColor.printError("Could not create file: " + fCus);
             }
             return cusList;
         }
@@ -146,7 +147,7 @@ public class IOHelper {
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            System.out.println("Error loading customers.");
+            ConsoleColor.printError("Error loading customers.");
         }
         return cusList;
     }
@@ -158,7 +159,7 @@ public class IOHelper {
             try {
                 fileName.createNewFile();
             } catch (IOException e) {
-                System.out.println("Could not create file: " + fPro);
+                ConsoleColor.printError("Could not create file: " + fPro);
             }
             return proList;
         }
@@ -181,7 +182,7 @@ public class IOHelper {
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            System.out.println("Error loading products.");
+            ConsoleColor.printError("Error loading products.");
         }
         return proList;
     }
@@ -193,7 +194,7 @@ public class IOHelper {
             try {
                 fileName.createNewFile();
             } catch (IOException e) {
-                System.out.println("Could not create file: " + fTra);
+                ConsoleColor.printError("Could not create file: " + fTra);
             }
             return traList;
         }
@@ -255,12 +256,12 @@ public class IOHelper {
                         traList.put(transId, transaction);
 
                     } catch (Exception e) {
-                        System.out.println("Error processing transaction line, skipping.");
+                        ConsoleColor.printError("Error processing transaction line, skipping.");
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error loading transactions.");
+            ConsoleColor.printError("Error loading transactions.");
         }
         return traList;
     }
