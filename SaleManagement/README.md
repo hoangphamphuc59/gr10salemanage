@@ -23,6 +23,7 @@
 │   │   ├── 📄 TransactionManager.java
 │   │   └── 📁 Validation
 │   │       ├── 📄 CustomerValidation.java
+│   │       ├── 📄 ProductValidation.java
 │   │       ├── 📄 StringUtils.java
 │   │       └── 📄 Validator.java
 │   └── 📁 ui
