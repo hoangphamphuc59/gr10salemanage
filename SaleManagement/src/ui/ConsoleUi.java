@@ -183,10 +183,18 @@ public class ConsoleUi {
             int choice = readInt("Please enter your choice (0-5): ", 0, 5);
 
             if (choice == 1) {
-                String id =  readProductField("Input new product name: ", "name");
+                String id;
+                while (true) {
+                    id = readProductField("Input product ID: ", "id");
+                    if (productManager.findById(id) != null) {
+                        ConsoleColor.printError("Product ID already exists! Please input a different ID.");
+                        continue;
+                    }
+                    break;
+                }
 
-                String name = readProductField("Input new category: ", "category");
-                String cat = readProductField("Input new category: ", "category");
+                String name = readProductField("Input product name: ", "name");
+                String cat = readProductField("Input product category: ", "category");
                 double price = readDouble("Input product price: ", 0.01, Double.MAX_VALUE);
                 int stock = readInt("Input product stock quantity: ", 0, Integer.MAX_VALUE);
 
@@ -200,12 +208,14 @@ public class ConsoleUi {
                 pause();
 
             } else if (choice == 2) {
-                String id = readString("Input ID of product to update: ");
+                String id = readProductField("Input product ID: ", "id");
                 if (productManager.findById(id) == null) {
                     ConsoleColor.printError("Product not found!");
                 } else {
-                    String name = readString("Input new product name: ");
-                    String cat = readString("Input new category: ");
+                    String name = readProductField("Input new product name: ", "name");
+
+                    String cat = readProductField("Input new category: ", "category");
+
                     double price = readDouble("Input new price: ", 0.01, Double.MAX_VALUE);
                     int stock = readInt("Input new stock quantity: ", 0, Integer.MAX_VALUE);
 
@@ -274,7 +284,15 @@ public class ConsoleUi {
             int choice = readInt("Please enter your choice (0-4): ", 0, 4);
 
             if (choice == 1) {
-                String id = readCustomerField("Input customer ID: ", "id");
+                String id;
+                while (true) {
+                    id = readCustomerField("Input customer ID: ", "id");
+                    if (customerManager.findById(id) != null) {
+                        ConsoleColor.printError("Customer ID already exists! Please input a different ID.");
+                        continue;
+                    }
+                    break;
+                }
                 String name = readCustomerField("Input customer name: ", "name");
                 String phone = readCustomerField("Input phone: ", "phone");
                 String email = readCustomerField("Input email: ", "email");
