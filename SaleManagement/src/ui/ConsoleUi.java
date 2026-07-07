@@ -3,7 +3,7 @@ package ui;
 import IO.IOHelper;
 import models.*;
 import services.*;
-import services.Validation.CustomerValidation;
+import services.Validation.*;
 
 import java.util.*;
 
@@ -13,18 +13,22 @@ public class ConsoleUi {
     private final CustomerManager customerManager;
     private final TransactionManager transactionManager;
     private final CustomerValidation customerValidation;
+    private final ProductValidation productValidation;
+
     private final Scanner sc;
 
     public ConsoleUi(IOHelper ioHelper,
             ProductManager productManager,
             CustomerManager customerManager,
             TransactionManager transactionManager,
-            CustomerValidation customerValidation) {
+            CustomerValidation customerValidation,
+            ProductValidation productValidation) {
         this.ioHelper = ioHelper;
         this.productManager = productManager;
         this.customerManager = customerManager;
         this.transactionManager = transactionManager;
         this.customerValidation = customerValidation;
+        this.productValidation = productValidation;
         this.sc = new Scanner(System.in);
     }
 
@@ -111,8 +115,23 @@ public class ConsoleUi {
         while (true) {
             String rawValue = readString(prompt);
             try {
-                if(rawValue == null) throw new IllegalArgumentException("Cannot empty");
+                if (rawValue == null)
+                    throw new IllegalArgumentException("Cannot empty");
                 return customerValidation.validate(fieldName, rawValue);
+            } catch (IllegalArgumentException e) {
+                ConsoleColor.printError("Invalid input: " + e.getMessage());
+            }
+        }
+    }
+
+    private String readProductField(String prompt, String fieldName) {
+        while (true) {
+            String rawValue = readString(prompt);
+            try {
+                if (rawValue == null) {
+                    throw new IllegalArgumentException("Cannot be empty");
+                }
+                return productValidation.validate(fieldName, rawValue);
             } catch (IllegalArgumentException e) {
                 ConsoleColor.printError("Invalid input: " + e.getMessage());
             }
@@ -164,10 +183,10 @@ public class ConsoleUi {
             int choice = readInt("Please enter your choice (0-5): ", 0, 5);
 
             if (choice == 1) {
-                String id = readString("Input product ID: ");
-                
-                String name = readString("Input product name: ");
-                String cat = readString("Input product category: ");
+                String id =  readProductField("Input new product name: ", "name");
+
+                String name = readProductField("Input new category: ", "category");
+                String cat = readProductField("Input new category: ", "category");
                 double price = readDouble("Input product price: ", 0.01, Double.MAX_VALUE);
                 int stock = readInt("Input product stock quantity: ", 0, Integer.MAX_VALUE);
 

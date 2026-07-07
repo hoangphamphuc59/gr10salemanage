@@ -8,7 +8,7 @@ import IO.IOHelper;
 // import java.util.Scanner;
 import ui.ConsoleUi;
 import services.*;
-import services.Validation.CustomerValidation;
+import services.Validation.*;
 public class Main {
 
     public static void main(String[] args) {
@@ -18,8 +18,9 @@ public class Main {
         InventoryManager inventoryManager = new InventoryManager();
         TransactionManager transactionManager = new TransactionManager(inventoryManager);
         CustomerValidation customerValidation = new CustomerValidation();
+        ProductValidation productValidation = new ProductValidation(productManager);
         ConsoleUi ui = new ConsoleUi(ioHelper, productManager, 
-            customerManager, transactionManager, customerValidation);
+            customerManager, transactionManager, customerValidation, productValidation);
 
         ui.start();
         ui.mainMenu();
