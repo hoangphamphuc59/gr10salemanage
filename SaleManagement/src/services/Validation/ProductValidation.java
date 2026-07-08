@@ -97,22 +97,4 @@ public class ProductValidation implements Validator<String> {
     }
 
     
-    public int findAt(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '@') {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    
-    public int findDot(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '.') {
-                return i;
-            }
-        }
-        return -1;
-    }
 }
