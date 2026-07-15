@@ -53,7 +53,7 @@ public class TransactionManager {
      * Returns true if confirmed, false if failed.
      */
     public boolean confirmTransaction(Transaction transaction, ArrayList<Product> productList) {
-        if (transaction == null || transaction.isEmpty()) return false;
+        if (transaction == null || transaction.getItems() == null || transaction.getItems().isEmpty()) return false;
 
         String status = transaction.getStatus();
         if ("CANCELLED".equalsIgnoreCase(status) || "CONFIRMED".equalsIgnoreCase(status) || "FAILED".equalsIgnoreCase(status)) {

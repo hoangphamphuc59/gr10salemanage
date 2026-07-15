@@ -72,7 +72,7 @@ public class Transaction {
 
     public double calculateTotal() {
         this.totalAmount = 0.0;
-        if (!isEmpty()) {
+        if (items.isEmpty()) {
             for (Map.Entry<Product, Integer> entry : items.entrySet()) {
                 Product product = entry.getKey();
                 Integer quantity = entry.getValue();
@@ -93,7 +93,7 @@ public class Transaction {
         System.out.println("Customer: " + (this.customer != null ? this.customer.getName() : "Unknown"));
         System.out.println("Items:");
 
-        if (isEmpty()) {
+        if (items.isEmpty()) {
             System.out.println("  (No items in this transaction)");
         } else {
             items.forEach((product, quantity) -> {
@@ -104,9 +104,5 @@ public class Transaction {
 
         System.out.printf("Total Amount: $%.2f\n", this.calculateTotal());
         System.out.println("=========================================");
-    }
-
-    public boolean isEmpty() {
-        return items == null || items.isEmpty();
     }
 }
