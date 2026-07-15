@@ -89,18 +89,26 @@ The system supports managing products, customers, sales transactions, and revenu
 ## 💻 Requirements
 
 - **JDK 8** (required — the project targets JDK 8 compatibility)
-- A Java-capable IDE, such as:
-  - **NetBeans 13** (or other NetBeans versions)
+- **NetBeans 13** (recommended IDE — this project was originally built and is best supported with NetBeans)
+- Alternatively, other common Java IDEs can also be used:
   - **IntelliJ IDEA** (the project already includes `.idea` config)
   - **VS Code** with the Java Extension Pack
-  - Or any other common Java IDE of your choice
+  - Or any other Java IDE of your choice
 - A terminal that supports ANSI color codes for the best display experience (macOS/Linux terminal, or modern Windows Terminal / CMD on Windows)
 
 ---
 
 ## 🚀 Installation & Running
 
-### Option 1: Using IntelliJ IDEA (recommended)
+### Option 1: Using NetBeans (recommended)
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/hoangphamphuc59/gr10salemanage.git
+   ```
+2. Open NetBeans (version 13 or later), choose **File → Open Project**, and select the `SaleManagement` folder.
+3. Right-click the project and choose **Run**, or locate `Main.java` and run it directly.
+
+### Option 2: Using IntelliJ IDEA (alternative)
 1. Clone the repository:
    ```bash
    git clone https://github.com/hoangphamphuc59/gr10salemanage.git
@@ -108,14 +116,6 @@ The system supports managing products, customers, sales transactions, and revenu
 2. Open IntelliJ IDEA, choose **Open**, and select the `gr10salemanage` folder.
 3. Wait for the IDE to finish indexing, then locate `SaleManagement/src/Main.java`.
 4. Click **Run** (▶) to launch the application.
-
-### Option 2: Using NetBeans
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/hoangphamphuc59/gr10salemanage.git
-   ```
-2. Open NetBeans (version 13 or later), choose **File → Open Project**, and select the `SaleManagement` folder.
-3. Right-click the project and choose **Run**, or locate `Main.java` and run it directly.
 
 ### Option 3: Compile & run from the command line
 ```bash
