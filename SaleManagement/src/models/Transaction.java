@@ -72,7 +72,7 @@ public class Transaction {
 
     public double calculateTotal() {
         this.totalAmount = 0.0;
-        if (items.isEmpty()) {
+        if (items != null && !items.isEmpty()) {
             for (Map.Entry<Product, Integer> entry : items.entrySet()) {
                 Product product = entry.getKey();
                 Integer quantity = entry.getValue();
