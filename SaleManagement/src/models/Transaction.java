@@ -93,7 +93,7 @@ public class Transaction {
         System.out.println("Customer: " + (this.customer != null ? this.customer.getName() : "Unknown"));
         System.out.println("Items:");
 
-        if (items.isEmpty()) {
+        if (items == null || items.isEmpty()) {
             System.out.println("  (No items in this transaction)");
         } else {
             items.forEach((product, quantity) -> {
