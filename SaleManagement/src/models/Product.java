@@ -57,11 +57,7 @@ public class Product {
     }
 
     public void showProduct() {
-        System.out.println("ID: " + productId);
-        System.out.println("Name: " + productName);
-        System.out.println("Category: " + category);
-        System.out.println("Price: " + price);
-        System.out.println("Stock: " + stock);
+        System.out.printf("\n| ID: %-15s | Name: %-30s | Category: %-18s | Price: %-10.1f | Stock: %-10d\n",productId, productName, category, price, stock);
         System.out.println("--------------------------------------");
     }
 }
