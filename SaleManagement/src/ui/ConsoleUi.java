@@ -355,8 +355,8 @@ public class ConsoleUi {
                     ConsoleColor.printError("No customers available.");
                 } else {
                     for (Customer c : customers) {
-                        System.out.printf("%-10s | %-25s | %-15s | %-15.2f\n",
-                                c.getId(), c.getName(), c.getPhone(), c.getDiscount());
+                        System.out.printf("ID: %-15s | NAME: %-30s | PHONE: %-15s | DISCOUNT: %-5.2f%s\n",
+                                c.getId(), c.getName(), c.getPhone(), c.getDiscount() * 100, "%");
                     }
                 }
                 pause();
