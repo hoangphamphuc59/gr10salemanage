@@ -1,3 +1,1 @@
-|CUS210370|Phuc|0123456789|hoa@mail.com|a me ri ca|19|male|0.05|
-|CUS234|chanh|0968755719|chanh@mail.com|vietnam|13|nam|0.05|
-|CUS123|abc|0909123456|hoang@gmail.com|hcm|12|male|0.00|
+|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|

@@ -1,2 +1,3 @@
-|TR1|CUS123|abc|0909123456|hoang@gmail.com|hcm|12|male|0.05|2026-06-15|2850.00|CONFIRMED|3|111|a|food|1000.00|94|#|
-|TR2|CUS123|abc|0909123456|hoang@gmail.com|hcm|12|male|0.00|2026-06-15|3000.00|CONFIRMED|3|111|a|food|1000.00|94|#|
+|TR1|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|475.00|CONFIRMED|5|PRO001|sandwich|food|100.00|2|#|
+|TR3|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|95.00|CONFIRMED|5|PRO003|salad|food|20.00|18|#|
+|TR2|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|76.00|CANCELLED|4|PRO003|salad|food|20.00|18|#|

@@ -431,7 +431,6 @@ public class ConsoleUi {
                         ConsoleColor.printError("Transaction failed (possibly out of stock).");
                     }
                 } else {
-                    transactionManager.cancelTransaction(transaction);
                     transactionManager.getTransactionList().put(transaction.getTransactionId(), transaction);
                     saveAllData();
                     ConsoleColor.printSuccess("Transaction cancelled and saved to history.");

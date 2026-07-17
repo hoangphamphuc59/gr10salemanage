@@ -1,4 +1,3 @@
-|PRO222|bac xiu|food|20.00|37|
-|PRO001|den da|food|12123123.00|3|
-|PRO111|a|food|1000.00|94|
-|PRO41234123512|r213r23f|13f213f|1234.00|1234|
+|PRO001|sandwich|food|100.00|2|
+|PRO002|cafe|drink|31.00|14|
+|PRO003|salad|food|20.00|18|
