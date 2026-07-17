@@ -92,12 +92,11 @@ public class TransactionManager {
         HashMap<Product, Integer> items = transaction.getItems();
         Product targetProduct = null;
         for (Product p : items.keySet()) {
-            if (p.getProductId().equals(productId)) {
+            if (p.getProductId().equalsIgnoreCase(productId)) {
                 targetProduct = p;
                 break;
             }
         }
-
         if (targetProduct == null) return false;
 
         if (newQty <= 0) {

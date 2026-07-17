@@ -433,7 +433,7 @@ public class ConsoleUi {
                 } else {
                     transactionManager.getTransactionList().put(transaction.getTransactionId(), transaction);
                     saveAllData();
-                    ConsoleColor.printSuccess("Transaction cancelled and saved to history.");
+                    ConsoleColor.printSuccess("Transaction saved to history with pending status.");
                 }
                 pause();
 

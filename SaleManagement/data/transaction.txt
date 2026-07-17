@@ -1,3 +1,2 @@
-|TR1|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|475.00|CONFIRMED|5|PRO001|sandwich|food|100.00|2|#|
-|TR3|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|95.00|CONFIRMED|5|PRO003|salad|food|20.00|18|#|
-|TR2|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|76.00|CANCELLED|4|PRO003|salad|food|20.00|18|#|
+|TR1|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|250.80|CONFIRMED|4|PRO002|cafe|drink|31.00|9|7|PRO003|salad|food|20.00|11|#|
+|TR2|CUS001|long|1234568801|admadke@gmail.com|31 quang trung q10|17|male|0.05|2026-07-17|58.90|CANCELLED|2|PRO002|cafe|drink|31.00|9|#|
