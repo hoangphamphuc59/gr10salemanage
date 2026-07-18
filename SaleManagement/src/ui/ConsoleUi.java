@@ -8,6 +8,7 @@ import services.Validation.*;
 import java.util.*;
 
 public class ConsoleUi {
+
     private final IOHelper ioHelper;
     private final ProductManager productManager;
     private final CustomerManager customerManager;
@@ -115,8 +116,9 @@ public class ConsoleUi {
         while (true) {
             String rawValue = readString(prompt);
             try {
-                if (rawValue == null)
+                if (rawValue == null) {
                     throw new IllegalArgumentException("Cannot empty");
+                }
                 return customerValidation.validate(fieldName, rawValue);
             } catch (IllegalArgumentException e) {
                 ConsoleColor.printError("Invalid input: " + e.getMessage());
@@ -392,8 +394,9 @@ public class ConsoleUi {
 
                 while (true) {
                     String pId = readString("Input Product ID to add (or type 'DONE' to finish): ");
-                    if (pId.equalsIgnoreCase("DONE"))
+                    if (pId.equalsIgnoreCase("DONE")) {
                         break;
+                    }
 
                     Product product = productManager.findById(pId);
                     if (product == null) {
@@ -486,9 +489,12 @@ public class ConsoleUi {
                 if (transactions.isEmpty()) {
                     ConsoleColor.printError("No transactions found.");
                 } else {
-                    for (Map.Entry<String, Transaction> t : transactions.entrySet()) {
-                        t.getValue().displayTransaction();
-                    }
+                    transactions.entrySet().stream()
+                            .sorted((e1, e2) -> {
+                                int id1 = Integer.parseInt(e1.getKey().substring(2));
+                                int id2 = Integer.parseInt(e2.getKey().substring(2));
+                                return Integer.compare(id1, id2);
+                            }).forEach(entry -> entry.getValue().displayTransaction());
                 }
                 pause();
 
