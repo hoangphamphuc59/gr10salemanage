@@ -376,9 +376,10 @@ public class ConsoleUi {
             System.out.println("1. Create a new sales transaction");
             System.out.println("2. Update or cancel a transaction");
             System.out.println("3. View transaction history");
+            System.out.println("4. Search transaction by ID");
             System.out.println("0. Back to Main Menu");
 
-            int choice = readInt("Please enter your choice (0-3): ", 0, 3);
+            int choice = readInt("Please enter your choice (0-4): ", 0, 4);
 
             if (choice == 1) {
                 String transId = transactionManager.generateTransactionId();
@@ -498,6 +499,16 @@ public class ConsoleUi {
                 }
                 pause();
 
+            } else if (choice == 4) {
+                String id = readString("Input Transaction ID: ");
+                Transaction transaction = transactionManager.findById(id);
+                if (transaction == null) {
+                    ConsoleColor.printError("Transaction not found!");
+                } else {
+                    System.out.println("--------------------------------------");
+                    transaction.displayTransaction();
+                }
+                pause();
             } else if (choice == 0) {
                 break;
             }
