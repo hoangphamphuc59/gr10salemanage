@@ -1,13 +1,13 @@
-|TR15|CUS015|Hoang Van Thai|0949667788|thai.hoang@gmail.com|789 Le Trong Tan Tan Phu|40|male|0.05|2026-07-26|175.75|CONFIRMED|1|PRO005|Beef Burger|food|85.00|25|1|PRO001|Sandwich|food|100.00|20|#|
+|TR15|CUS015|Hoang Van Thai|0949667788|thai.hoang@gmail.com|789 Le Trong Tan Tan Phu|40|male|0.05|2026-07-26|175.75|CONFIRMED|1|PRO001|Sandwich|food|100.00|20|1|PRO005|Beef Burger|food|85.00|25|#|
 |TR14|CUS014|Pham Thu Huong|0938556677|huong.pham@gmail.com|456 Nguyen Trai Q5|29|female|0.00|2026-07-25|110.00|CONFIRMED|1|PRO012|Spaghetti Bolognese|food|110.00|18|#|
 |TR13|CUS013|Trinh Quoc Bao|0909445566|bao.trinh@gmail.com|123 Xo Viet Nghe Tinh Binh Thanh|34|male|0.05|2026-07-25|285.00|CONFIRMED|2|PRO007|Pepperoni Pizza|food|150.00|15|#|
-|TR1|CUS001|Nguyen Van Long|0912345678|long.nguyen@gmail.com|31 Quang Trung Q10|25|male|0.05|2026-07-17|250.80|CONFIRMED|7|PRO003|Caesar Salad|food|20.00|30|4|PRO002|Espresso Coffee|drink|31.00|50|#|
+|TR1|CUS001|Nguyen Van Long|0912345678|long.nguyen@gmail.com|31 Quang Trung Q10|25|male|0.05|2026-07-17|250.80|CONFIRMED|4|PRO002|Espresso Coffee|drink|31.00|50|7|PRO003|Caesar Salad|food|20.00|30|#|
 |TR3|CUS002|Tran Thi Mai|0987654321|mai.tran@yahoo.com|120 Le Loi Q1|28|female|0.00|2026-07-18|170.00|CONFIRMED|1|PRO001|Sandwich|food|100.00|20|2|PRO006|Orange Juice|drink|35.00|60|#|
 |TR2|CUS001|Nguyen Van Long|0912345678|long.nguyen@gmail.com|31 Quang Trung Q10|25|male|0.05|2026-07-17|58.90|CANCELLED|2|PRO002|Espresso Coffee|drink|31.00|50|#|
 |TR5|CUS004|Pham Minh Anh|0914223344|anh.pham@gmail.com|78 CMT8 Q3|22|female|0.00|2026-07-20|85.00|CONFIRMED|1|PRO008|Milk Tea|drink|40.00|45|1|PRO004|Matcha Latte|drink|45.00|40|#|
 |TR4|CUS003|Le Hoang Nam|0903112233|nam.le@hotmail.com|45 Nguyen Hue Q1|32|male|0.05|2026-07-19|223.25|CONFIRMED|1|PRO007|Pepperoni Pizza|food|150.00|15|1|PRO005|Beef Burger|food|85.00|25|#|
-|TR7|CUS006|Vu Phuong Thao|0933889900|thao.vu@gmail.com|99 Cong Hoa Tan Binh|24|female|0.05|2026-07-21|76.00|CONFIRMED|1|PRO010|Tiramisu Cake|dessert|50.00|20|1|PRO011|Chocolate Ice Cream|dessert|30.00|30|#|
 |TR12|CUS011|Doan Van Duc|0971223344|duc.doan@gmail.com|67 Hoang Van Thu Phu Nhuan|31|male|0.00|2026-07-24|225.00|CANCELLED|9|PRO013|Green Tea|drink|25.00|80|#|
+|TR7|CUS006|Vu Phuong Thao|0933889900|thao.vu@gmail.com|99 Cong Hoa Tan Binh|24|female|0.05|2026-07-21|76.00|CONFIRMED|1|PRO011|Chocolate Ice Cream|dessert|30.00|30|1|PRO010|Tiramisu Cake|dessert|50.00|20|#|
 |TR6|CUS005|Hoang Gia Bao|0978556677|bao.hoang@gmail.com|12 Vo Van Ngan Thu Duc|29|male|0.00|2026-07-21|225.00|CONFIRMED|3|PRO009|Fried Chicken|food|75.00|35|#|
 |TR11|CUS010|Dinh Thi Ngoc|0918990011|ngoc.dinh@yahoo.com|144 Phan Xang Long Binh Thanh|26|female|0.05|2026-07-23|137.75|CONFIRMED|2|PRO006|Orange Juice|drink|35.00|60|1|PRO009|Fried Chicken|food|75.00|35|#|
 |TR9|CUS008|Bui Thanh Thuy|0945667788|thuy.bui@gmail.com|233 Tran Hưng Dao Q5|27|female|0.00|2026-07-22|85.00|CANCELLED|1|PRO005|Beef Burger|food|85.00|25|#|

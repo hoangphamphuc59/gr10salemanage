@@ -91,6 +91,7 @@ public class Transaction {
         System.out.println("Date: " + this.date);
         System.out.println("Status: " + this.status);
         System.out.println("Customer Name: " + (this.customer != null ? this.customer.getName() : "Unknown"));
+        System.out.println("Customer ID: " + this.customer.getId());
         double discount = this.customer.getDiscount() * 100;
         System.out.println("Discount: " + discount + "%");
         System.out.println("Items:");
