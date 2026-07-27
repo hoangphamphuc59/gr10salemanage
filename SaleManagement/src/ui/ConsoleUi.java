@@ -357,8 +357,10 @@ public class ConsoleUi {
                     ConsoleColor.printError("No customers available.");
                 } else {
                     for (Customer c : customers) {
-                        System.out.printf("ID: %-15s | NAME: %-30s | PHONE: %-15s | DISCOUNT: %-5.2f%s\n",
-                                c.getId(), c.getName(), c.getPhone(), c.getDiscount() * 100, "%");
+                        String type = (c.getDiscount() > 0) ? "VIP" : "Regular";
+                        System.out.printf("| ID: %-8s | Name: %-20s | Phone: %-12s | Email: %-25s | Age: %-3d | Gender: %-6s | Type: %-7s | Address: %-30s |\n",
+                                c.getId(), c.getName(), c.getPhone(), c.getEmail(), c.getAge(), c.getGender(), type, c.getAddress());
+                        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------");
                     }
                 }
                 pause();
