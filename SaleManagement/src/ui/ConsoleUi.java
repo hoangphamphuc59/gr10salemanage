@@ -453,6 +453,8 @@ public class ConsoleUi {
                     ConsoleColor.printError("Cannot update a confirmed transaction.");
                 } else if ("CANCELLED".equalsIgnoreCase(t.getStatus())) {
                     ConsoleColor.printError("Transaction is already cancelled.");
+                } else if ("FAILED".equalsIgnoreCase(t.getStatus())) {
+                    ConsoleColor.printError("Cannot update a failed transaction.");
                 } else {
                     System.out.println("1. Update product quantity");
                     System.out.println("2. Cancel transaction");
