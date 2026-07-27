@@ -10,7 +10,9 @@ import java.util.Map;
 
 public class TransactionManager {
 
-    private Map <String, Transaction> transactionList;
+    private int idCounter = 1;
+
+    private Map<String, Transaction> transactionList;
     private final InventoryManager inventoryManager;
 
     public TransactionManager(InventoryManager inventoryManager) {
@@ -18,29 +20,33 @@ public class TransactionManager {
         this.inventoryManager = inventoryManager;
     }
 
-    public Map <String, Transaction> getTransactionList() {
+    public Map<String, Transaction> getTransactionList() {
         return transactionList;
     }
 
-    public void setTransactionList(Map <String, Transaction> transactionList) {
+    public void setTransactionList(Map<String, Transaction> transactionList) {
         this.transactionList = transactionList;
     }
 
     public Transaction findById(String id) {
         id = id.toUpperCase();
-        if(transactionList.get(id) != null){
+        if (transactionList.get(id) != null) {
             return transactionList.get(id);
         }
         return null;
     }
 
     public String generateTransactionId() {
-            String tmp = "TR";
-            return tmp + (transactionList.size()+1);
+        while (transactionList.containsKey("TR" + idCounter)) {
+            idCounter++;
+        }
+        return "TR" + idCounter;
     }
 
     public Transaction createTransaction(String transId, Customer customer, HashMap<Product, Integer> cart) {
-        if (customer == null || cart == null || cart.isEmpty()) return null;
+        if (customer == null || cart == null || cart.isEmpty()) {
+            return null;
+        }
 
         Transaction transaction = new Transaction(transId, customer, LocalDate.now(), 0.0, "PENDING", cart);
         transaction.calculateTotal();
@@ -49,11 +55,13 @@ public class TransactionManager {
     }
 
     /**
-     * Confirms a transaction by checking inventory stock.
-     * Returns true if confirmed, false if failed.
+     * Confirms a transaction by checking inventory stock. Returns true if
+     * confirmed, false if failed.
      */
     public boolean confirmTransaction(Transaction transaction, ArrayList<Product> productList) {
-        if (transaction == null || transaction.getItems() == null || transaction.getItems().isEmpty()) return false;
+        if (transaction == null || transaction.getItems() == null || transaction.getItems().isEmpty()) {
+            return false;
+        }
 
         String status = transaction.getStatus();
         if ("CANCELLED".equalsIgnoreCase(status) || "CONFIRMED".equalsIgnoreCase(status) || "FAILED".equalsIgnoreCase(status)) {
@@ -82,7 +90,9 @@ public class TransactionManager {
     }
 
     public boolean updateProductQuantity(Transaction transaction, String productId, int newQty) {
-        if (transaction == null) return false;
+        if (transaction == null) {
+            return false;
+        }
 
         String status = transaction.getStatus();
         if ("CONFIRMED".equalsIgnoreCase(status) || "CANCELLED".equalsIgnoreCase(status)) {
@@ -97,7 +107,9 @@ public class TransactionManager {
                 break;
             }
         }
-        if (targetProduct == null) return false;
+        if (targetProduct == null) {
+            return false;
+        }
 
         if (newQty <= 0) {
             items.remove(targetProduct);
