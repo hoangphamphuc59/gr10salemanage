@@ -32,14 +32,13 @@ public class ReportManager {
                 YearMonth targetMonth = YearMonth.parse(dateInput);
                 for (Map.Entry<String, Transaction> t : traList.entrySet()) {
                     YearMonth transMonth = YearMonth.from(t.getValue().getDate());
-                    if ("CONFIRMED".equalsIgnoreCase(t.getValue().getStatus()) && transMonth.equals(targetMonth)) {
+                    if (t.getValue().getStatus().equalsIgnoreCase("CONFIRMED") && transMonth.equals(targetMonth)) {
                         validTransactions.add(t.getValue());
                     }
                 }
             }
         } catch (Exception e) {
-            ConsoleColor.printError(
-                    "Invalid date format! Please use 'yyyy-MM-dd' for daily and 'yyyy-MM' for monthly reports.");
+            ConsoleColor.printError("Invalid date format! Please use 'yyyy-MM-dd' for daily and 'yyyy-MM' for monthly reports.");
         }
         return validTransactions;
     }

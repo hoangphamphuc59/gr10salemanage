@@ -1,4 +1,4 @@
-|PRO001|Sandwich|food|100.00|0|
+|PRO001|Sandwich|food|100.00|50|
 |PRO002|Espresso Coffee|drink|31.00|50|
 |PRO003|Caesar Salad|food|20.00|30|
 |PRO004|Matcha Latte|drink|45.00|40|
@@ -11,5 +11,5 @@
 |PRO011|Chocolate Ice Cream|dessert|30.00|30|
 |PRO012|Spaghetti Bolognese|food|110.00|18|
 |PRO013|Green Tea|drink|25.00|80|
-|PRO014|Croissant Bread|food|35.00|40|
-|PRO015|Fruit Tart|dessert|55.00|12|
+|PRO014|Croissant Bread|food|35.00|50|
+|PRO015|Fruit Tart|dessert|55.00|15|

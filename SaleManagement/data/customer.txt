@@ -13,3 +13,4 @@
 |CUS013|Trinh Quoc Bao|0909445566|bao.trinh@gmail.com|123 Xo Viet Nghe Tinh Binh Thanh|34|male|0.05|
 |CUS014|Pham Thu Huong|0938556677|huong.pham@gmail.com|456 Nguyen Trai Q5|29|female|0.00|
 |CUS015|Hoang Van Thai|0949667788|thai.hoang@gmail.com|789 Le Trong Tan Tan Phu|40|male|0.05|
+|CUS016|Pham Thi Ha|0909817336|haphamthi11@gmail.com|23/17 Bach Dang|34|female|0.00|

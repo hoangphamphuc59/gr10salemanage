@@ -57,15 +57,24 @@ public class ProductManager {
     public boolean updateProduct(String id, String newName, String newCategory, double newPrice, int newStock) {
         Product p = findById(id);
         if (p == null) return false;
-        if (newName == null || newName.trim().isEmpty()) return false;
-        if (newCategory == null || newCategory.trim().isEmpty()) return false;
-        if (newPrice <= 0) return false;
-        if (newStock < 0) return false;
-
-        p.setProductName(newName);
-        p.setCategory(newCategory);
-        p.setPrice(newPrice);
-        p.setStock(newStock);
+        
+        
+        if (!(newName == null) && !newName.trim().isEmpty()){
+            p.setProductName(newName);
+        }
+        
+        if (!(newCategory == null) && !newCategory.trim().isEmpty()){
+            p.setCategory(newCategory);
+        }
+        
+        if (!(newPrice <= 0)){
+            p.setPrice(newPrice);
+        }
+        
+        if (!(newStock < 0)){
+            p.setStock(newStock);
+        } 
+        
         return true;
     }
 

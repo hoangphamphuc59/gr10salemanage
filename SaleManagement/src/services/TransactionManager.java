@@ -95,7 +95,7 @@ public class TransactionManager {
         }
 
         String status = transaction.getStatus();
-        if ("CONFIRMED".equalsIgnoreCase(status) || "CANCELLED".equalsIgnoreCase(status)) {
+        if (!status.equalsIgnoreCase("PENDING")) {
             return false;
         }
 

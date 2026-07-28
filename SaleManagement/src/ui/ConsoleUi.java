@@ -214,19 +214,38 @@ public class ConsoleUi {
                 if (productManager.findById(id) == null) {
                     ConsoleColor.printError("Product not found!");
                 } else {
-                    String name = readProductField("Input new product name: ", "name");
-
-                    String cat = readProductField("Input new category: ", "category");
-
-                    double price = readDouble("Input new price: ", 0.01, Double.MAX_VALUE);
-                    int stock = readInt("Input new stock quantity: ", 0, Integer.MAX_VALUE);
-
-                    boolean result = productManager.updateProduct(id, name, cat, price, stock);
-                    if (result) {
-                        saveAllData();
-                        ConsoleColor.printSuccess("Product updated successfully!");
-                    } else {
-                        ConsoleColor.printError("Failed to update product!");
+                    try{
+                        System.out.print("Input new name (leave blank to not change): ");
+                        String newName = sc.nextLine();
+                        
+                        System.out.print("Input new category (leave blank to not change): ");
+                        String newCategory = sc.nextLine();
+                        
+                        System.out.print("Input new price (leave blank to not change): ");
+                        String temp = sc.nextLine();
+                        double newPrice = 0.00;
+                        
+                        if(temp != null && !temp.isEmpty()){
+                            newPrice = Double.parseDouble(temp);
+                        }
+                        
+                        System.out.print("Input new stock (leave blank to not change): ");
+                        temp = sc.nextLine();
+                        int newStock = -1;
+                        
+                        if(temp != null && !temp.isEmpty()){
+                            newStock = Integer.parseInt(temp);
+                        }
+                        
+                        
+                        boolean success = productManager.updateProduct(id, newName, newCategory, newPrice, newStock);
+                        if(success){
+                            ConsoleColor.printSuccess("Product updated successfully!");
+                        }else{
+                            ConsoleColor.printError("Failed to update product!");
+                        }
+                    }catch(Exception e){
+                        ConsoleColor.printError("Invalid data type!");
                     }
                 }
                 pause();
