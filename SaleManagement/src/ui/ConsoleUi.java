@@ -214,37 +214,36 @@ public class ConsoleUi {
                 if (productManager.findById(id) == null) {
                     ConsoleColor.printError("Product not found!");
                 } else {
-                    try{
+                    try {
                         System.out.print("Input new name (leave blank to not change): ");
                         String newName = sc.nextLine();
-                        
+
                         System.out.print("Input new category (leave blank to not change): ");
                         String newCategory = sc.nextLine();
-                        
+
                         System.out.print("Input new price (leave blank to not change): ");
                         String temp = sc.nextLine();
                         double newPrice = 0.00;
-                        
-                        if(temp != null && !temp.isEmpty()){
+
+                        if (temp != null && !temp.isEmpty()) {
                             newPrice = Double.parseDouble(temp);
                         }
-                        
+
                         System.out.print("Input new stock (leave blank to not change): ");
                         temp = sc.nextLine();
                         int newStock = -1;
-                        
-                        if(temp != null && !temp.isEmpty()){
+
+                        if (temp != null && !temp.isEmpty()) {
                             newStock = Integer.parseInt(temp);
                         }
-                        
-                        
+
                         boolean success = productManager.updateProduct(id, newName, newCategory, newPrice, newStock);
-                        if(success){
+                        if (success) {
                             ConsoleColor.printSuccess("Product updated successfully!");
-                        }else{
+                        } else {
                             ConsoleColor.printError("Failed to update product!");
                         }
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         ConsoleColor.printError("Invalid data type!");
                     }
                 }
@@ -341,20 +340,42 @@ public class ConsoleUi {
                 if (customerManager.findById(id) == null) {
                     ConsoleColor.printError("Customer not found!");
                 } else {
-                    String name = readCustomerField("Input new name: ", "name");
-                    String phone = readCustomerField("Input new phone: ", "phone");
-                    String email = readString("Input new email: ");
-                    String address = readString("Input new address: ");
-                    int age = readInt("Input new age: ", 1, 150);
-                    String gender = readString("Input new gender: ");
+                    try {
+                        System.out.print("Input new name (leave blank to not change): ");
+                        String newName = sc.nextLine();
 
-                    boolean result = customerManager.updateCustomer(id, name, phone, email, address, age, gender);
-                    if (result) {
-                        saveAllData();
-                        ConsoleColor.printSuccess("Customer updated successfully!");
-                    } else {
-                        ConsoleColor.printError("Failed to update customer!");
+                        System.out.print("Input new phone number (leave blank to not change): ");
+                        String newPhone = sc.nextLine();
+
+                        System.out.print("Input new email (leave blank to not change): ");
+                        String newEmail = sc.nextLine();
+
+                        System.out.print("Input new address (leave blank to not change): ");
+                        String newAddress = sc.nextLine();
+
+                        System.out.print("Input new age (leave blank to not change): ");
+                        String temp = sc.nextLine();
+                        int newAge = -1;
+
+                        if (temp != null && !temp.isEmpty()) {
+                            newAge = Integer.parseInt(temp);
+                        }
+
+                        System.out.print("Input new gender (leave blank to not change): ");
+                        String newGender = sc.nextLine();
+                        
+
+                        boolean success = customerManager.updateCustomer(id, newName, newPhone, newEmail, newAddress,
+                                newAge, newGender);
+                        if (success) {
+                            ConsoleColor.printSuccess("Customer updated successfully!");
+                        } else {
+                            ConsoleColor.printError("Failed to update customer!");
+                        }
+                    } catch (Exception e) {
+                        ConsoleColor.printError("Invalid data type!");
                     }
+
                 }
                 pause();
 
@@ -377,9 +398,12 @@ public class ConsoleUi {
                 } else {
                     for (Customer c : customers) {
                         String type = (c.getDiscount() > 0) ? "VIP" : "Regular";
-                        System.out.printf("| ID: %-8s | Name: %-20s | Phone: %-12s | Email: %-25s | Age: %-3d | Gender: %-6s | Type: %-7s | Address: %-30s |\n",
-                                c.getId(), c.getName(), c.getPhone(), c.getEmail(), c.getAge(), c.getGender(), type, c.getAddress());
-                        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------");
+                        System.out.printf(
+                                "| ID: %-8s | Name: %-20s | Phone: %-12s | Email: %-25s | Age: %-3d | Gender: %-6s | Type: %-7s | Address: %-30s |\n",
+                                c.getId(), c.getName(), c.getPhone(), c.getEmail(), c.getAge(), c.getGender(), type,
+                                c.getAddress());
+                        System.out.println(
+                                "---------------------------------------------------------------------------------------------------------------------------------------------");
                     }
                 }
                 pause();

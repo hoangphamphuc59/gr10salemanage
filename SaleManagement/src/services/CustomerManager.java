@@ -44,17 +44,30 @@ public class CustomerManager {
         return true;
     }
 
-    public boolean updateCustomer(String id, String newName, String newPhone, String newEmail, String newAddress, int newAge, String newGender) {
+    public boolean updateCustomer(String id, String newName, String newPhone, 
+                    String newEmail, String newAddress, int newAge, String newGender) {
         Customer c = findById(id);
         if (c == null) return false;
-        if (newName == null || newName.trim().isEmpty()) return false;
 
-        c.setName(newName);
-        c.setPhone(newPhone);
-        c.setEmail(newEmail);
-        c.setAddress(newAddress);
-        c.setAge(newAge);
-        c.setGender(newGender);
+        if (newName != null && !newName.trim().isEmpty()) {
+            c.setName(newName);
+        }
+        if (newPhone != null && !newPhone.trim().isEmpty()) {
+            c.setPhone(newPhone);
+        }
+        if (newEmail != null && !newEmail.trim().isEmpty()) {
+            c.setEmail(newEmail);
+        }
+        if (newAddress != null && !newAddress.trim().isEmpty()) {
+            c.setAddress(newAddress);
+        }
+        if (newAge > 0) {
+            c.setAge(newAge);
+        }
+        if (newGender != null && !newGender.trim().isEmpty()) {
+            c.setGender(newGender);
+        }
+
         return true;
     }
 
